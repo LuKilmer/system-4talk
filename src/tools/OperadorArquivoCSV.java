@@ -35,9 +35,9 @@ public class OperadorArquivoCSV {
 			//Caso o arquivo que tenha sido criado não exista.
 			try {
 				data.createNewFile();
-				System.out.println("asd");
-				escrevercolunaTitulo.write(String.join( ";", colunaTitulo));
 				
+				escrevercolunaTitulo.write(String.join( ";", colunaTitulo));
+		
 			}
 			
 			catch(Exception error) {

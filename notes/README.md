@@ -4,14 +4,14 @@
 
 # 
 
-<div align=center>
+<div >
 
 #coisas para fazer:
 
 
 ## regras de negócio:
 
-<table width=700>
+<table width=800>
   <tr>
     <th >regra</th>
     <th>status</th>
@@ -65,98 +65,113 @@
 classe possuidora de todas as regras de negócio, todas são "public static"
 
 
-<table width=800>
+<table width=900>
   <tr>
-    <th>metodo</th>
-    <th>descrição</th>
-    <th>status</th>
+    <th width=200>metodo</th>
+    <th width=500>descrição</th>
+    <th width=100>status</th>
   </tr>
   
   <tr>
     <td>void criarIndividuo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>Cria um indivíduo no repositório, caso inexista no repositório</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
-    <td>boolean validarIndividuo(nomeindivíduo,senha) </td>
-    <td>retorna true se o indivíduo existir no repositório</td>
-    <td align=center><b>fazer<b></td>
-  </tr>
-  
-  <tr>
-    <td>void criarIndividuo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>boolean validarIndividuo (nomeindivíduo,senha) </td>
+    <td>Retorna true se o indivíduo existir no repositório</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
     <td>void criarAdministrador(nomeadministrador, senha)</td>
-    <td>cria um administrador no repositório, caso inexista no repositório</td>
+    <td>Cria um administrador no repositório, caso inexista no repositório</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
-    <td>void criarGrupo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>void criarGrupo (nomegrupo)</td>
+    <td>Cria um grupo no repositório, caso inexista no repositório</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
-    <td>public static void criarIndividuo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>void inserirGrupo (nomeindivíduo, nomegrupo)</td>
+    <td>Localiza o indivíduo e o grupo no repositório e cria o relacionamento entre eles</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
-    <td>public static void criarIndividuo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>void removerGrupo (nomeindividuo, nomegrupo)</td>
+    <td>Localiza o indivíduo e o grupo no repositório e remove o relacionamento entre eles</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
-    <td>public static void criarIndividuo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>void criarMensagem (nomeindivíduo, nomedestinatario, texto)</td>
+    <td>Localiza o indivíduo e o participante destinatário no repositório, cria a mensagem e a relaciona com eles dois</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
-    <td>public static void criarIndividuo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>void obterConversa (nomeindivíduo, nomedestinatario)</td>
+    <td>Localiza o indivíduo e o participante
+destinatário no repositório e retorna todas as mensagens enviadas e recebidas entre eles, em
+ordem cronológica</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
-    <td>public static void criarIndividuo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>void apagarMensagem (nomeindivíduo, id)</td>
+    <td>Localiza no repositório o indivíduo e o id da mensagem
+emitida por ele, remove os relacionamentos entre mensagem, emitente e destinatário e exclui a mensagem do repositório</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
-    <td>public static void criarIndividuo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>ArrayList(Mensagem)listarMensagensEnviadas(nomeindivíduo)</td>
+    <td>Localiza no repositório o indivíduo e retorna as mensagens enviadas por ele</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
-    <td>public static void criarIndividuo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>ArrayList(Mensagem)listarMensagensRecebidas(nomeparticipante)</td>
+    <td>Localiza no repositório o participante e retorna
+as mensagens recebidas por ele</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
-    <td>public static void criarIndividuo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>ArrayList(String)listarIndividuos()</td>
+    <td>Retorna o nome dos indivíduos do repositório, com o nome dos grupos relacionados (informar individuo ativo/não ativo e grupo ativo/não ativo)</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
   <tr>
-    <td>public static void criarIndividuo(nomeindivíduo, senha)</td>
-    <td>cria um indivíduo no repositório, caso inexista no repositório</td>
+    <td>ArrayList(String) listarGrupos()</td>
+    <td>Retorna o nome dos grupos do repositório juntamente com o nome dos indivíduos relacionados (informar grupo ativo/não ativo e individuo ativo/não ativo)</td>
+    <td align=center><b>fazer<b></td>
+  </tr>
+  
+  <tr>
+    <td>ArrayList(Mensagem) espeionarMensagens (nomeadministrador, temo)</td>
+    <td>Localiza no repositório o administrador e retorna as mensagens do sistema, contendo o termo fornecido (termo vazio retorna todas as mensagens do sistema)</td>
     <td align=center><b>fazer<b></td>
   </tr>
   
 </table> 
 
+## Considerações finais:
+
+
+Não se pode alterar as assinaturas dos métodos da Fachada
+<p>• Serão fornecidas classes de teste.
+<p>• A chave do mapa participantes é o nome do participante
+<p>• A chave do mapa mensagens é o id da mensagem
+<p>• O método carregarDados() lê de arquivo texto todos os objetos do repositório e o método salvarDados() grava em arquivo texto todos os objetos do repositório, usando os arquivos:
+<p> &nbsp;&nbsp;  o Os indivíduos são armazenados no arquivo individual.txt (nomeindividuo;senha;administrador)
+<p>	&nbsp;&nbsp; o Os grupos são armazenados no arquivo grupo.txt (nomegrupo;p1;p2;...;pN) onde p1,p2,...,pN são os nomes dos indivíduos de cada grupo.
+<p>	&nbsp;&nbsp; o As mensagens são armazenadas no arquivo mensagem.txt (id;texto,nomeemitente;nomedestinatário;datahora), onde datahora está no formato “dd/MM/yyyy HH:mm:ss”
 
 </div>
