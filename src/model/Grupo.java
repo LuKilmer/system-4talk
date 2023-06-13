@@ -26,6 +26,10 @@ public class Grupo extends Participante {
 		return this.individuos.remove(individuo);
 	}
 
+	public void adicionar(Individual ind){
+		
+	}
+
 	@Override
 	public String toString() {
 		return "Nome do Grupo:" + this.getNome() + " Quantidade de participantes: " + this.individuos.size();

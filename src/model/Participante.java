@@ -23,4 +23,11 @@ public  class  Participante {
 		return recebidas;
 	}
 
+    public ArrayList<Mensagem> getEnviadas() {
+        return null;
+    }
+
+    public void removerRecebida(Mensagem m) {
+    }
+
 }

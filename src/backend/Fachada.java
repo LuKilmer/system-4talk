@@ -1,13 +1,12 @@
 package backend;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.function.Predicate;
 
 import model.Grupo;
 import model.Individual;
 import model.Mensagem;
 import model.Participante;
-import repositorio.Repositorio;
+import repository.Repositorio;
 
 public class Fachada {
 	private Fachada() {}
@@ -19,10 +18,10 @@ public class Fachada {
 		return repositorio.getIndividuos();	
 	}
 	public static ArrayList<Grupo> listarGrupos() {
-
+		return null;
 	}
 	public static ArrayList<Mensagem> listarMensagens() {
-		
+		return null;
 	}
 
 	public static ArrayList<Mensagem> listarMensagensEnviadas(String nome) throws Exception{
@@ -34,7 +33,7 @@ public class Fachada {
 	}
 
 	public static ArrayList<Mensagem> listarMensagensRecebidas(String nome) throws Exception{
-		
+		return null;
 	}
 
 	public static void criarIndividuo(String nome, String senha) throws  Exception{
@@ -115,6 +114,7 @@ public class Fachada {
 		//Adicionar na conversa as mensagens da lista recebidas cujo emitente é igual ao parametro destinatario
 		//ordenar a lista conversa pelo id das mensagens
 		//retornar a lista conversa
+		return null;
 	}
 
 	public static void apagarMensagem(String nomeindividuo, int id) throws  Exception{
@@ -154,12 +154,14 @@ public class Fachada {
 		//localizar individuo no repositorio
 		//verificar se individuo é administrador
 		//listar as mensagens que contem o termo no texto
+		return null;
 	}
 
 	public static ArrayList<String> ausentes(String nomeadministrador) throws Exception{
 		//localizar individuo no repositorio
 		//verificar se individuo é administrador
 		//listar os nomes dos participante que nao enviaram mensagens
+		return null;
 	}
 
 }

@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.TreeMap;
+
 import model.Grupo;
 import model.Individual;
 import model.Mensagem;
@@ -16,12 +18,35 @@ import model.Participante;
 
 
 public class Repositorio {
+	private TreeMap<String,Grupo> participantes = new TreeMap<>();
+	private ArrayList<Mensagem> mensagens = new ArrayList<>();
+	
+	
+	public ArrayList<Individual>getIndividuos(){
+		return null;
+	}
+	
+	private ArrayList<Grupo>getGrupos() {
+		return null;
+	}
+	
+	public void remover(Mensagem msg) {
+	}
 	
 	public void adicionar(Individual ind) {
-		
+	}
+	
+	public void adicionar(Grupo ind) {
+	}
+	
+	public void adicionar(Mensagem msg) {
 	}
 	
 	public Individual localizarIndividual(String nome) {
+		return null;
+	}
+	
+	public Participante localizarParticipante(String nome) {
 		return null;
 	}
 	
@@ -109,7 +134,8 @@ public class Repositorio {
 				texto = partes[3];
 				emitente = this.localizarParticipante(nomeemitente);
 				destinatario = this.localizarParticipante(nomedestinatario);
-				m = new Mensagem(Integer.parseInt(id),emitente,destinatario,texto);
+				//O professor quer Participante e Participante, não Participante Individual
+				m = new Mensagem(Integer.parseInt(id),emitente,destinatario,texto);				
 				this.adicionar(m);
 			} 
 			arquivo3.close();
@@ -142,7 +168,7 @@ public class Repositorio {
 			File f = new File( new File(".\\individuos.csv").getCanonicalPath())  ;
 			FileWriter arquivo2 = new FileWriter(f) ; 
 			for(Individual ind : this.getIndividuos()) {
-				arquivo2.write(ind.getNome() +";"+ ind.getSenha() +";"+ ind.getAdministrador() +"\n");	
+				arquivo2.write(ind.getNome() +";"+ ind.getSenha() +";"+ ind.isAdministrador() +"\n");	
 			} 
 			arquivo2.close();
 		}
@@ -165,4 +191,8 @@ public class Repositorio {
 			throw new RuntimeException("problema na criação do arquivo  grupos "+e.getMessage());
 		}
 	}
+
+
+
+	
 }

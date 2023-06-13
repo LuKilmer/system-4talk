@@ -68,4 +68,17 @@ public class Individual extends Participante {
 
 		return "Nome: " + this.getNome() + " " + checkAdministrador + " administrador." + "grupos=" + grupos;
 	}
+
+	public void removerEnviada(Mensagem m) {
+	}
+
+    public Mensagem localizarEnviada(int id) {
+        return null;
+    }
+
+    public Object localizarGrupo(String nome) {
+        return null;
+    }
+
+    
 }
