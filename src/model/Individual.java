@@ -10,8 +10,10 @@ public class Individual extends Participante {
 	private ArrayList<Mensagem> enviadas;
 	private ArrayList<Grupo> grupos;
 
-	public Individual(String nome, String senha, boolean administrador) {
+	public Individual(String nome, String senha, boolean administrador) throws Exception {
 		super(nome);
+		if (senha.length() == 0)
+			throw new Exception("O CAMPO DE SENHA PRECISA SER PREENCHIDO");
 		this.senha = senha;
 		this.administrador = administrador;
 	}
@@ -20,7 +22,9 @@ public class Individual extends Participante {
 		return senha;
 	}
 
-	public void setSenha(String senha) {
+	public void setSenha(String senha) throws Exception {
+		if (senha.length() == 0)
+			throw new Exception("O CAMPO DE SENHA PRECISA SER PREENCHIDO");
 		this.senha = senha;
 	}
 
@@ -36,6 +40,26 @@ public class Individual extends Participante {
 		return grupos;
 	}
 
+	public boolean AdicionarGrupo(Grupo grupo) {
+		if (this.grupos.indexOf(grupo) == -1) {
+			this.grupos.add(grupo);
+			return true;
+		} else
+			return false;
+	}
+
+	public boolean removerGrupo(Grupo grupo) {
+		return this.grupos.remove(grupo);
+	}
+
+	public boolean AdicionarMensagem(Mensagem mensagem) {
+		return this.enviadas.add(mensagem);
+
+	}
+
+	public boolean removerMensagem(Mensagem mensagem) {
+		return this.enviadas.remove(mensagem);
+	}
 
 	public String toString() {
 		String checkAdministrador = "Não é";

@@ -1,7 +1,5 @@
 
 
-
-
 # 
 
 <div >
@@ -26,7 +24,7 @@
   </tr>
   <tr>
     <td>3-Um indivíduo não pode ter senha vazia</td>
-    <td align=center><b>fazer<b></td>
+    <td align=center><b>FEITO<b></td>
   </tr>
   <tr>
     <td>4-Uma mensagem não pode ter texto vazio</td>
