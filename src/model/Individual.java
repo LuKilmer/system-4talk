@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import model.Mensagem;
 
 public class Individual extends Participante {
 	private String senha;
