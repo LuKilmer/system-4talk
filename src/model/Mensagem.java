@@ -5,16 +5,16 @@ import java.time.LocalDateTime;
 public class Mensagem {
 	private int id;
 	private String texto;
-	private Individual emitente;
-	private Participante desitnatario;
+	private Participante emitente;
+	private Participante destinatario;
 	private LocalDateTime dataHora;
 
-	public Mensagem(int id, String texto, Individual emitente, Participante desitnatario, LocalDateTime dataHora) {
+	public Mensagem(int id, Participante emitente, Participante desitnatario, String texto) {
 		this.id = id;
 		this.texto = texto;
 		this.emitente = emitente;
-		this.desitnatario = desitnatario;
-		this.dataHora = dataHora;
+		this.destinatario = desitnatario;
+		this.dataHora = LocalDateTime.now();
 	}
 
 	public int getId() {
@@ -25,12 +25,12 @@ public class Mensagem {
 		return texto;
 	}
 
-	public Individual getEmitente() {
+	public Participante getEmitente() {
 		return emitente;
 	}
 
 	public Participante getDesitnatario() {
-		return desitnatario;
+		return destinatario;
 	}
 
 	public LocalDateTime getDataHora() {
@@ -42,6 +42,6 @@ public class Mensagem {
 	}
 
     public Participante getDestinatario() {
-        return null;
+        return this.destinatario;
     }
 }

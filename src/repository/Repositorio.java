@@ -18,11 +18,13 @@ import model.Participante;
 
 
 public class Repositorio {
-	private TreeMap<String,Grupo> participantes = new TreeMap<>();
+	private TreeMap<String,Participante> participantes = new TreeMap<>();
 	private ArrayList<Mensagem> mensagens = new ArrayList<>();
 	
 	
 	public ArrayList<Individual>getIndividuos(){
+		ArrayList<Individual> IndividuosList = new ArrayList<>();
+		
 		return null;
 	}
 	
@@ -34,6 +36,7 @@ public class Repositorio {
 	}
 	
 	public void adicionar(Individual ind) {
+		participantes.put(ind.getNome(), ind);
 	}
 	
 	public void adicionar(Grupo ind) {
@@ -134,8 +137,7 @@ public class Repositorio {
 				texto = partes[3];
 				emitente = this.localizarParticipante(nomeemitente);
 				destinatario = this.localizarParticipante(nomedestinatario);
-				//O professor quer Participante e Participante, não Participante Individual
-				m = new Mensagem(Integer.parseInt(id),emitente,destinatario,texto);				
+				m = new Mensagem(Integer.parseInt(id),emitente,destinatario,texto);
 				this.adicionar(m);
 			} 
 			arquivo3.close();
@@ -146,6 +148,7 @@ public class Repositorio {
 
 	}
 
+	
 
 	public void	salvarObjetos()  {
 		//gravar nos arquivos csv os objetos que estão no repositório
@@ -168,7 +171,7 @@ public class Repositorio {
 			File f = new File( new File(".\\individuos.csv").getCanonicalPath())  ;
 			FileWriter arquivo2 = new FileWriter(f) ; 
 			for(Individual ind : this.getIndividuos()) {
-				arquivo2.write(ind.getNome() +";"+ ind.getSenha() +";"+ ind.isAdministrador() +"\n");	
+				arquivo2.write(ind.getNome() +";"+ ind.getSenha() +";"+ ind.getAdministrador() +"\n");	
 			} 
 			arquivo2.close();
 		}

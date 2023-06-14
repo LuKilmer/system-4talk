@@ -80,5 +80,14 @@ public class Individual extends Participante {
         return null;
     }
 
+	public String getAdministrador() {
+		if(this.isAdministrador()) {
+			return this.getNome();
+		}else {
+			return null;
+		}
+		
+	}
+
     
 }
