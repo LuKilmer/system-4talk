@@ -22,7 +22,6 @@ public class Repositorio {
 	private TreeMap<Integer,Mensagem> mensagens = new TreeMap<>();
 	
 	
-	
 	public ArrayList<Individual>getIndividuos(){
 		ArrayList<Individual> IndividuosList = new ArrayList<>();
 		for(Participante part: this.participantes.values()) {
@@ -33,7 +32,7 @@ public class Repositorio {
 		return IndividuosList;
 	}
 	
-	private ArrayList<Grupo>getGrupos() {
+	public ArrayList<Grupo>getGrupos() {
 		ArrayList<Individual> IndividuosList = this.getIndividuos();
 		ArrayList<Grupo> GroupList = new ArrayList<>();
 		
@@ -47,6 +46,7 @@ public class Repositorio {
 		return GroupList;
 	}
 	
+	//fim dos métodos temporários
 	
 	public void remover(Mensagem msg) {
 		this.mensagens.remove(msg.getId());
@@ -90,6 +90,18 @@ public class Repositorio {
 		return chosen;
 	}
 	
+	public Grupo localizarGrupo(String nome) {
+		Grupo chosen = null;
+		ArrayList<Grupo> listaGrupos = new ArrayList<>();
+		for(Grupo aux: listaGrupos) {
+			if(aux.getNome().equals(nome)) {
+				chosen = aux;
+				break;
+			}
+		}
+		return chosen;
+	}
+	
 	
 	public Participante localizarParticipante(String nome) {
 		Participante member = this.participantes.get(nome);
@@ -105,9 +117,9 @@ public class Repositorio {
 		// carregar para o repositorio os objetos dos arquivos csv
 		try {
 			//caso os arquivos nao existam, serao criados vazios
-			File f1 = new File( new File(".\\mensagens.csv").getCanonicalPath() ) ; 
-			File f2 = new File( new File(".\\individuos.csv").getCanonicalPath() ) ; 
-			File f3 = new File( new File(".\\grupos.csv").getCanonicalPath() ) ; 
+			File f1 = new File( new File("./data/mensagens.csv").getCanonicalPath() ) ; 
+			File f2 = new File( new File("./data/individuos.csv").getCanonicalPath() ) ; 
+			File f3 = new File( new File("./data/grupos.csv").getCanonicalPath() ) ; 
 			if (!f1.exists() || !f2.exists() || !f3.exists() ) {
 				//System.out.println("criando arquivo .csv vazio");
 				FileWriter arquivo1 = new FileWriter(f1); arquivo1.close();
@@ -125,7 +137,7 @@ public class Repositorio {
 
 		try	{
 			String nome,senha,administrador;
-			File f = new File( new File(".\\individuos.csv").getCanonicalPath())  ;
+			File f = new File( new File("./data/individuos.csv").getCanonicalPath())  ;
 			Scanner arquivo1 = new Scanner(f);	 //  pasta do projeto
 			while(arquivo1.hasNextLine()) 	{
 				linha = arquivo1.nextLine().trim();	
@@ -147,7 +159,7 @@ public class Repositorio {
 			String nome;
 			Grupo grupo;
 			Individual individuo;
-			File f = new File( new File(".\\grupos.csv").getCanonicalPath());
+			File f = new File( new File("./data/grupos.csv").getCanonicalPath());
 			Scanner arquivo2 = new Scanner(f);	 //  pasta do projeto
 			while(arquivo2.hasNextLine()) 	{
 				linha = arquivo2.nextLine().trim();	
@@ -173,7 +185,7 @@ public class Repositorio {
 			String id, nomeemitente, nomedestinatario,texto;
 			Mensagem m;
 			Participante emitente,destinatario;
-			File f = new File( new File(".\\mensagens.csv").getCanonicalPath() )  ;
+			File f = new File( new File("./data/mensagens.csv").getCanonicalPath() )  ;
 			Scanner arquivo3 = new Scanner(f);	 //  pasta do projeto
 			while(arquivo3.hasNextLine()) 	{
 				linha = arquivo3.nextLine().trim();		
@@ -201,7 +213,7 @@ public class Repositorio {
 	public void	salvarObjetos()  {
 		//gravar nos arquivos csv os objetos que estão no repositório
 		try	{
-			File f = new File( new File(".\\mensagens.csv").getCanonicalPath())  ;
+			File f = new File( new File("./data/mensagens.csv").getCanonicalPath())  ;
 			FileWriter arquivo1 = new FileWriter(f); 
 			for(Mensagem m : mensagens.values()) 	{
 				arquivo1.write(	m.getId()+";"+
@@ -216,7 +228,7 @@ public class Repositorio {
 		}
 
 		try	{
-			File f = new File( new File(".\\individuos.csv").getCanonicalPath())  ;
+			File f = new File( new File("./data/individuos.csv").getCanonicalPath())  ;
 			FileWriter arquivo2 = new FileWriter(f) ; 
 			for(Individual ind : this.getIndividuos()) {
 				arquivo2.write(ind.getNome() +";"+ ind.getSenha() +";"+ ind.getAdministrador() +"\n");	
@@ -228,7 +240,7 @@ public class Repositorio {
 		}
 
 		try	{
-			File f = new File( new File(".\\grupos.csv").getCanonicalPath())  ;
+			File f = new File( new File("./data/grupos.csv").getCanonicalPath())  ;
 			FileWriter arquivo3 = new FileWriter(f) ; 
 			for(Grupo g : this.getGrupos()) {
 				String texto="";

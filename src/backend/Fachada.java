@@ -18,7 +18,7 @@ public class Fachada {
 		return repositorio.getIndividuos();	
 	}
 	public static ArrayList<Grupo> listarGrupos() {
-		return null;
+		return repositorio.getGrupos();
 	}
 	public static ArrayList<Mensagem> listarMensagens() {
 		return null;
@@ -59,6 +59,12 @@ public class Fachada {
 	public static void criarGrupo(String nome) throws  Exception{
 		//localizar nome no repositorio
 		//criar o grupo	
+		if(repositorio.localizarGrupo(nome)!=null) {
+			throw new Exception("Já existe um grupo com o nome " + nome);
+		}
+		Grupo novoGrupo = new Grupo(nome);
+		repositorio.adicionar(novoGrupo);
+		//repositorio.adicionar(new Grupo(nome));
 	}
 
 	public static void inserirGrupo(String nomeindividuo, String nomegrupo) throws  Exception{
@@ -144,9 +150,7 @@ public class Fachada {
 					else
 						return false;
 				}
-
 			});
-
 		}
 	}
 
