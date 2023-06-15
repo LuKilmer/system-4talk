@@ -17,6 +17,8 @@ public class Individual extends Participante {
 		this.administrador = administrador;
 	}
 
+	
+
 	public String getSenha() {
 		return senha;
 	}

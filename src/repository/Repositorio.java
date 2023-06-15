@@ -19,39 +19,87 @@ import model.Participante;
 
 public class Repositorio {
 	private TreeMap<String,Participante> participantes = new TreeMap<>();
-	private ArrayList<Mensagem> mensagens = new ArrayList<>();
+	private TreeMap<Integer,Mensagem> mensagens = new TreeMap<>();
+	
 	
 	
 	public ArrayList<Individual>getIndividuos(){
 		ArrayList<Individual> IndividuosList = new ArrayList<>();
-		
-		return null;
+		for(Participante part: this.participantes.values()) {
+			if(part instanceof Individual) {
+				IndividuosList.add((Individual) part);
+			}
+		}
+		return IndividuosList;
 	}
 	
 	private ArrayList<Grupo>getGrupos() {
-		return null;
+		ArrayList<Individual> IndividuosList = this.getIndividuos();
+		ArrayList<Grupo> GroupList = new ArrayList<>();
+		
+		for(Individual person: IndividuosList) {
+			for(Grupo group: person.getGrupos()) {
+				if(!GroupList.contains(group)) {
+					GroupList.add(group);
+				}
+			}
+		}
+		return GroupList;
 	}
 	
+	
 	public void remover(Mensagem msg) {
+		this.mensagens.remove(msg.getId());
 	}
+	
 	
 	public void adicionar(Individual ind) {
 		participantes.put(ind.getNome(), ind);
 	}
 	
+	
 	public void adicionar(Grupo ind) {
+		
 	}
+	
 	
 	public void adicionar(Mensagem msg) {
+		this.mensagens.put(msg.getId(), msg);
 	}
+	
 	
 	public Individual localizarIndividual(String nome) {
-		return null;
+		Individual chosen = null;
+	
+		for(Participante part: this.participantes.values()) {
+			if(part instanceof Individual) {
+				if(part.equals(nome)) {
+					chosen = (Individual) part;
+					break;
+			}
+		}}
+		/*
+		ArrayList<Individual> IndividuosList = this.getIndividuos();
+		Individual chosen = null;
+		for(Individual ind: IndividuosList) {
+			if(ind.getNome().equals(nome)) {
+				chosen = ind;
+				break;
+			}
+		}*/
+		return chosen;
 	}
 	
+	
 	public Participante localizarParticipante(String nome) {
-		return null;
+		Participante member = this.participantes.get(nome);
+		if(member == null) {
+			//penso em fazer um tratamento especial
+			return null;
+		}
+		return member;
 	}
+	
 	
 	public void carregarObjetos()  	{
 		// carregar para o repositorio os objetos dos arquivos csv
@@ -99,7 +147,7 @@ public class Repositorio {
 			String nome;
 			Grupo grupo;
 			Individual individuo;
-			File f = new File( new File(".\\grupos.csv").getCanonicalPath())  ;
+			File f = new File( new File(".\\grupos.csv").getCanonicalPath());
 			Scanner arquivo2 = new Scanner(f);	 //  pasta do projeto
 			while(arquivo2.hasNextLine()) 	{
 				linha = arquivo2.nextLine().trim();	
@@ -145,9 +193,9 @@ public class Repositorio {
 		catch(Exception ex)		{
 			throw new RuntimeException("leitura arquivo de mensagens:"+ex.getMessage());
 		}
-
 	}
 
+	
 	
 
 	public void	salvarObjetos()  {
@@ -155,7 +203,7 @@ public class Repositorio {
 		try	{
 			File f = new File( new File(".\\mensagens.csv").getCanonicalPath())  ;
 			FileWriter arquivo1 = new FileWriter(f); 
-			for(Mensagem m : mensagens) 	{
+			for(Mensagem m : mensagens.values()) 	{
 				arquivo1.write(	m.getId()+";"+
 						m.getEmitente().getNome()+";"+
 						m.getDestinatario().getNome()+";"+
@@ -195,7 +243,4 @@ public class Repositorio {
 		}
 	}
 
-
-
-	
 }
