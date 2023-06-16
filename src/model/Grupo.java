@@ -14,7 +14,7 @@ public class Grupo extends Participante {
 		return individuos;
 	}
 
-	public boolean addIndividuo(Individual individuo) {
+	public boolean adicionar(Individual individuo) {
 		if (this.individuos.indexOf(individuo) == -1) {
 			this.individuos.add(individuo);
 			return true;
@@ -24,10 +24,6 @@ public class Grupo extends Participante {
 
 	public boolean removerIndividuo(Individual individuo) {
 		return this.individuos.remove(individuo);
-	}
-
-	public void adicionar(Individual ind){
-		
 	}
 
 	@Override
