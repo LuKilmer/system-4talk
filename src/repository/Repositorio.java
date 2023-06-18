@@ -17,17 +17,9 @@ import model.Individual;
 import model.Mensagem;
 import model.Participante;
 
-import tools.operadorCSV.OperadorArquivoCSV;
-
 public class Repositorio {
 	private TreeMap<String, Participante> participantes = new TreeMap<>();
 	private TreeMap<Integer, Mensagem> mensagens = new TreeMap<>();
-
-	// Referente aos nomes dos arquivos
-
-	static final String individuosCSVCaminho = "\\individuos.csv";
-	static final String mensagensCSVCaminho = "\\mensagens.csv";
-	static final String gruposCSVCaminho = "\\grupos.csv";
 
 	public ArrayList<Individual> getIndividuos() {
 		ArrayList<Individual> IndividuosList = new ArrayList<>();
@@ -63,7 +55,22 @@ public class Repositorio {
 		participantes.put(ind.getNome(), ind);
 	}
 
-	public void adicionar(Grupo ind) {
+	/**
+	 * método criado por Haniel
+	 * 
+	 * @param individuo
+	 */
+	public void remover(Individual individuo) {
+		this.participantes.remove(individuo.getNome());
+	}
+
+	/**
+	 * método criado por Haniel
+	 * 
+	 * @param individuo
+	 */
+	public void adicionar(Grupo grupo) {
+		this.participantes.put(grupo.getNome(), grupo);
 
 	}
 
@@ -249,14 +256,5 @@ public class Repositorio {
 			throw new RuntimeException("problema na criação do arquivo  grupos " + e.getMessage());
 		}
 	}
-
-	public static void criarIndividuo(String nomeindivíduo, String senha) throws Exception {
-
-		List<String> todosUsuarios = OperadorArquivoCSV.lerArquivo(Repositorio.individuosCSVCaminho);
-
-		if ((nomeindivíduo.toUpperCase()) == null)
-			throw new Exception("Usuário: " + nomeindivíduo + "Já Existe! Insira um novo nome!");
-
-	};
 
 }

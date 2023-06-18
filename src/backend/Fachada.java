@@ -1,5 +1,6 @@
 package backend;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
@@ -53,8 +54,30 @@ public class Fachada {
 		repositorio.adicionar(individuo);
 	}
 
+	/**
+	 * – cria um administrador no repositório, caso inexista no repositório
+	 * 
+	 * @param nome
+	 * @param senha
+	 * @throws Exception
+	 */
 	public static void criarAdministrador(String nome, String senha) throws Exception {
-		// ...
+		Individual individuo = repositorio.localizarIndividual(nome);
+
+		/*
+		 * O índividuo não existe — Então ele é criado com o valor de adm True.
+		 * O índividuo existe, mas não é adm — Ele recebe true no lugador do adm
+		 * O índividuo existe e é um adm — Retornamos uma Exception.
+		 */
+		if (individuo == null) {
+			individuo = new Individual(nome, senha, true);
+			repositorio.adicionar(individuo);
+		} else if (!(individuo.getAdministrador()))
+			individuo.setAdministrador(true);
+
+		else
+			throw new Exception("Esse índividuo já é um administrador!");
+
 	}
 
 	public static void criarGrupo(String nome) throws Exception {
@@ -73,6 +96,18 @@ public class Fachada {
 		// localizar nomegrupo no repositorio
 		// verificar se individuo nao esta no grupo
 		// adicionar individuo com o grupo e vice-versa
+
+		Individual participante = repositorio.localizarIndividual(nomeindividuo);
+		if (participante == null)
+			throw new Exception("Usuario não encontrado");
+
+		Grupo grupo = repositorio.localizarGrupo(nomegrupo);
+		if (grupo == null)
+			throw new Exception("Grupo não encontrado");
+
+		if (!grupo.adicionar(participante) || !participante.adicionar(grupo))
+			throw new Exception(
+					"O Índivíduo " + participante.getNome() + " já está presente no grupo: " + grupo.getNome());
 	}
 
 	public static void removerGrupo(String nomeindividuo, String nomegrupo) throws Exception {
@@ -80,6 +115,19 @@ public class Fachada {
 		// localizar nomegrupo no repositorio
 		// verificar se individuo ja esta no grupo
 		// remover individuo com o grupo e vice-versa
+
+		Individual participante = repositorio.localizarIndividual(nomeindividuo);
+		if (participante == null)
+			throw new Exception("Usuario não encontrado");
+
+		Grupo grupo = repositorio.localizarGrupo(nomegrupo);
+		if (grupo == null)
+			throw new Exception("Grupo não encontrado");
+
+		if (!grupo.removerIndividuo(participante))
+			throw new Exception(" Participante não encontrado: " + nomeindividuo);
+		else
+			participante.remover(grupo);
 	}
 
 	public static void criarMensagem(String nomeemitente, String nomedestinatario, String texto) throws Exception {
@@ -94,8 +142,35 @@ public class Fachada {
 		if (destinatario == null)
 			throw new Exception("criar mensagem - destinatario nao existe:" + nomeemitente);
 
-		if (destinatario instanceof Grupo g && emitente.localizarGrupo(g.getNome()) == null)
-			throw new Exception("criar mensagem - grupo nao permitido:" + nomedestinatario);
+		/* Foi uma ideia doida minha */
+		int id = (int) Instant.now().toEpochMilli(); // Obtém o valor do timestamp em milissegundos
+		Mensagem enviada = new Mensagem(id, emitente, destinatario, texto);
+
+		if (destinatario instanceof Grupo g) {
+
+			if (emitente.localizarGrupo(g.getNome()) == null)
+				throw new Exception("criar mensagem - grupo nao permitido:" + nomedestinatario);
+
+			/*
+			 * O Emitente deve adicionar a mensagem enviada em sua caixa de enviados.
+			 * O Grupo deve adicionar a mensagem enviada em sua caixa de recebidas.
+			 * Em seguida, cada índividuo no grupo receberá a mensagem que foi enviada.
+			 */
+			emitente.adicionar(enviada);
+			g.adicionarRecebida(enviada);
+
+			for (Participante participante : ((Grupo) destinatario).getIndividuos()) {
+				participante.adicionarRecebida(enviada);
+
+			}
+		} else {
+			/*
+			 * O Emitente deve adicionar a mensagem enviada em sua caixa de enviados.
+			 * O Destinatário deve adicionar a mensagem enviada em sua caixa de recebidas.
+			 */
+			emitente.adicionar(enviada);
+			destinatario.adicionarRecebida(enviada);
+		}
 
 		// cont.
 		// gerar id no repositorio para a mensagem

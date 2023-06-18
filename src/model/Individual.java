@@ -26,8 +26,12 @@ public class Individual extends Participante {
 		this.senha = senha;
 	}
 
-	public boolean isAdministrador() {
+	public boolean getAdministrador() {
 		return administrador;
+	}
+
+	public void setAdministrador(boolean valor) throws Exception {
+		this.administrador = valor;
 	}
 
 	public ArrayList<Mensagem> getEnviadas() {
@@ -76,13 +80,15 @@ public class Individual extends Participante {
 		return null;
 	}
 
-	public String getAdministrador() {
-		if (this.isAdministrador()) {
-			return this.getNome();
-		} else {
-			return null;
-		}
-
-	}
+	/*
+	 * public String getAdministrador() {
+	 * if (this.isAdministrador()) {
+	 * return this.getNome();
+	 * } else {
+	 * return null;
+	 * }
+	 * }
+	 * 
+	 */
 
 }

@@ -10,6 +10,7 @@ public class Grupo extends Participante {
 		super(nome);
 	}
 
+	/* Retorna o array contendo todos os individuos do Grupo */
 	public ArrayList<Individual> getIndividuos() {
 		return individuos;
 	}
@@ -29,6 +30,10 @@ public class Grupo extends Participante {
 	@Override
 	public String toString() {
 		return "Nome do Grupo:" + this.getNome() + " Quantidade de participantes: " + this.individuos.size();
+	}
+
+	public void setIndividuos(ArrayList<Individual> individuos) {
+		this.individuos = individuos;
 	}
 
 }
