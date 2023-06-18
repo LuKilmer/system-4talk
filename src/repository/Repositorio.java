@@ -20,8 +20,12 @@ import model.Participante;
 public class Repositorio {
 	private TreeMap<String,Participante> participantes = new TreeMap<>();
 	private TreeMap<Integer,Mensagem> mensagens = new TreeMap<>();
+	private TreeMap<String,Grupo> grupos = new TreeMap<>();
 	
-	
+	public Repositorio() {
+		this.carregarObjetos();
+		
+	}
 	public ArrayList<Individual>getIndividuos(){
 		ArrayList<Individual> IndividuosList = new ArrayList<>();
 		for(Participante part: this.participantes.values()) {
@@ -37,11 +41,14 @@ public class Repositorio {
 		ArrayList<Grupo> GroupList = new ArrayList<>();
 		
 		for(Individual person: IndividuosList) {
-			for(Grupo group: person.getGrupos()) {
+			if(person.getGrupos() != null){
+				for(Grupo group: person.getGrupos()) {
 				if(!GroupList.contains(group)) {
 					GroupList.add(group);
 				}
 			}
+			}
+			
 		}
 		return GroupList;
 	}
@@ -54,17 +61,21 @@ public class Repositorio {
 	
 	
 	public void adicionar(Individual ind) {
-		participantes.put(ind.getNome(), ind);
+		participantes.put(ind.getNome(), ind);	
+		this.salvarObjetos();
 	}
 	
 	
 	public void adicionar(Grupo ind) {
-		
+		System.out.println(ind.getNome());
+		grupos.put(ind.getNome(),ind);	
+		this.salvarObjetos();
 	}
 	
 	
 	public void adicionar(Mensagem msg) {
-		this.mensagens.put(msg.getId(), msg);
+		this.mensagens.put(msg.getId(), msg);	
+		this.salvarObjetos();
 	}
 	
 	
@@ -140,14 +151,16 @@ public class Repositorio {
 			File f = new File( new File("./data/individuos.csv").getCanonicalPath())  ;
 			Scanner arquivo1 = new Scanner(f);	 //  pasta do projeto
 			while(arquivo1.hasNextLine()) 	{
+				
 				linha = arquivo1.nextLine().trim();	
 				partes = linha.split(";");
-				//System.out.println(Arrays.toString(partes));
+				System.out.println(linha);
 				nome = partes[0];
 				senha = partes[1];
 				administrador = partes[2];
 				Individual ind = new Individual(nome,senha,Boolean.parseBoolean(administrador));
-				this.adicionar(ind);
+				participantes.put(ind.getNome(), ind);	
+				//this.adicionar(ind);
 			}
 			arquivo1.close();
 		}
@@ -172,7 +185,8 @@ public class Repositorio {
 						individuo = this.localizarIndividual(partes[i]);
 						grupo.adicionar(individuo);
 					}
-				this.adicionar(grupo);
+				//this.adicionar(grupo);
+				grupos.put(grupo.getNome(),grupo);
 			}
 			arquivo2.close();
 		}
@@ -198,7 +212,8 @@ public class Repositorio {
 				emitente = this.localizarParticipante(nomeemitente);
 				destinatario = this.localizarParticipante(nomedestinatario);
 				m = new Mensagem(Integer.parseInt(id),emitente,destinatario,texto);
-				this.adicionar(m);
+				this.mensagens.put(m.getId(), m);	
+				//this.adicionar(m);
 			} 
 			arquivo3.close();
 		}
@@ -220,7 +235,7 @@ public class Repositorio {
 						m.getEmitente().getNome()+";"+
 						m.getDestinatario().getNome()+";"+
 						m.getTexto()+"\n");	
-			} 
+			}
 			arquivo1.close();
 		}
 		catch(Exception e){
@@ -231,7 +246,7 @@ public class Repositorio {
 			File f = new File( new File("./data/individuos.csv").getCanonicalPath())  ;
 			FileWriter arquivo2 = new FileWriter(f) ; 
 			for(Individual ind : this.getIndividuos()) {
-				arquivo2.write(ind.getNome() +";"+ ind.getSenha() +";"+ ind.getAdministrador() +"\n");	
+				arquivo2.write(ind.getNome() +";"+ ind.getSenha() +";"+ Boolean.toString(ind.isAdministrador()) +"\n");	
 			} 
 			arquivo2.close();
 		}
@@ -242,10 +257,15 @@ public class Repositorio {
 		try	{
 			File f = new File( new File("./data/grupos.csv").getCanonicalPath())  ;
 			FileWriter arquivo3 = new FileWriter(f) ; 
-			for(Grupo g : this.getGrupos()) {
+			
+			for(Grupo g :grupos.values()) {
+				System.out.println(g.getNome());
 				String texto="";
-				for(Individual ind : g.getIndividuos())
+				if(g.getIndividuos()!=null){
+					for(Individual ind : g.getIndividuos())
 					texto += ";" + ind.getNome();
+				}
+	
 				arquivo3.write(g.getNome() + texto + "\n");	
 			} 
 			arquivo3.close();

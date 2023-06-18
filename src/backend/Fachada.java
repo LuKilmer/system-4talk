@@ -12,6 +12,10 @@ public class Fachada {
 	private Fachada() {}
 
 	private static Repositorio repositorio = new Repositorio();
+	
+	public static void salvarDados() {
+		repositorio.salvarObjetos();
+	};
 
 
 	public static ArrayList<Individual> listarIndividuos() {
@@ -64,6 +68,7 @@ public class Fachada {
 		}
 		Grupo novoGrupo = new Grupo(nome);
 		repositorio.adicionar(novoGrupo);
+		repositorio.salvarObjetos();
 		//repositorio.adicionar(new Grupo(nome));
 	}
 
