@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OperadorArquivoCSV {
+public abstract class OperadorArquivoCSV {
 
 	/**
 	 * método responsável por criar um novo arquivo CSV, em uma determinada

@@ -2,12 +2,11 @@ package model;
 
 import java.util.ArrayList;
 
-
 public class Individual extends Participante {
 	private String senha;
 	private boolean administrador;
-	private ArrayList<Mensagem> enviadas;
-	private ArrayList<Grupo> grupos;
+	private ArrayList<Mensagem> enviadas = new ArrayList<>();
+	private ArrayList<Grupo> grupos = new ArrayList<>();
 
 	public Individual(String nome, String senha, boolean administrador) throws Exception {
 		super(nome);
@@ -16,8 +15,6 @@ public class Individual extends Participante {
 		this.senha = senha;
 		this.administrador = administrador;
 	}
-
-	
 
 	public String getSenha() {
 		return senha;
@@ -29,8 +26,12 @@ public class Individual extends Participante {
 		this.senha = senha;
 	}
 
-	public boolean isAdministrador() {
+	public boolean getAdministrador() {
 		return administrador;
+	}
+
+	public void setAdministrador(boolean valor) throws Exception {
+		this.administrador = valor;
 	}
 
 	public ArrayList<Mensagem> getEnviadas() {
@@ -41,7 +42,7 @@ public class Individual extends Participante {
 		return grupos;
 	}
 
-	public boolean AdicionarGrupo(Grupo grupo) {
+	public boolean adicionar(Grupo grupo) {
 		if (this.grupos.indexOf(grupo) == -1) {
 			this.grupos.add(grupo);
 			return true;
@@ -49,16 +50,16 @@ public class Individual extends Participante {
 			return false;
 	}
 
-	public boolean removerGrupo(Grupo grupo) {
+	public boolean remover(Grupo grupo) {
 		return this.grupos.remove(grupo);
 	}
 
-	public boolean AdicionarMensagem(Mensagem mensagem) {
+	public boolean adicionar(Mensagem mensagem) {
 		return this.enviadas.add(mensagem);
 
 	}
 
-	public boolean removerMensagem(Mensagem mensagem) {
+	public boolean remover(Mensagem mensagem) {
 		return this.enviadas.remove(mensagem);
 	}
 
@@ -68,28 +69,26 @@ public class Individual extends Participante {
 		if (this.administrador)
 			checkAdministrador = "Sim,";
 
-		return "Nome: " + this.getNome() + " " + checkAdministrador + " administrador." + "grupos=" + grupos;
+		return "Nome: " + this.getNome() +" e sua senha é \""+this.getSenha()+"\", " + checkAdministrador + " administrador." + "grupos=" + grupos;
 	}
 
-	public void removerEnviada(Mensagem m) {
+	public Mensagem localizarEnviada(int id) {
+		return null;
 	}
 
-    public Mensagem localizarEnviada(int id) {
-        return null;
-    }
-
-    public Object localizarGrupo(String nome) {
-        return null;
-    }
-
-	public String getAdministrador() {
-		if(this.isAdministrador()) {
-			return this.getNome();
-		}else {
-			return null;
-		}
-		
+	public Object localizarGrupo(String nome) {
+		return null;
 	}
 
-    
+	/*
+	 * public String getAdministrador() {
+	 * if (this.isAdministrador()) {
+	 * return this.getNome();
+	 * } else {
+	 * return null;
+	 * }
+	 * }
+	 * 
+	 */
+
 }

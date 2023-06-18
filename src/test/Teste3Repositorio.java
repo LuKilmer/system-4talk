@@ -1,17 +1,16 @@
 package test;
-import repository.*;
+
 import backend.*;
-import model.*;
+
 
 public class Teste3Repositorio {
 	public static void main(String[] args) {
 		try {
-			Repositorio repo = new Repositorio();
-			Grupo cemiterio = new Grupo("Cemiterio 2023");
-			Individual p2 = new Individual("Palmeirinha", "123456", false);
-			repo.adicionar(cemiterio);
-			repo.adicionar(p2);
-			
+			Fachada.criarGrupo("GolpeDoBolsonaro");
+			Fachada.criarIndividuo("Vitor","16421");
+			Fachada.inserirGrupo("Vitor", "GolpeDoBolsonaro");
+			Fachada.criarAdministrador("Tonho Pereira", "Bolsonaro2022");
+			Fachada.inserirGrupo("Tonho Pereira", "GolpeDoBolsonaro");
 			
 			
 			
