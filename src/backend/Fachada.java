@@ -2,6 +2,7 @@ package backend;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.function.Predicate;
 
 import model.Grupo;
@@ -206,7 +207,44 @@ public class Fachada {
 		// ao parametro destinatario
 		// ordenar a lista conversa pelo id das mensagens
 		// retornar a lista conversa
-		return null;
+		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
+		if (emitente == null){
+			throw new Exception("criar mensagem - emitente nao existe:" + nomeindividuo);
+		}
+
+		Participante destinatario = repositorio.localizarParticipante(nomedestinatario);
+		if (destinatario == null){
+			throw new Exception("criar mensagem - destinatario nao existe:" + nomedestinatario);
+		}
+		ArrayList<Mensagem> enviadas = emitente.getEnviadas();
+		ArrayList<Mensagem> recebidas = emitente.getRecebidas();
+		ArrayList<Mensagem> conversa = new ArrayList<>();
+		if(enviadas.size()>0){
+			for(Mensagem msg: enviadas){
+			if(msg.getDesitnatario().getNome().equals(nomedestinatario)){
+				conversa.add(msg);
+			}}
+		}
+		
+		if(recebidas.size()>0){
+			for(Mensagem msg: recebidas){
+			if(msg.getEmitente().getNome().equals(nomedestinatario)){
+				conversa.add(msg);
+			}
+		}}
+		//metodo temporario de organização, pq estou com preguiça, precisa criar um método novo dentro da classe repositorio
+		ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
+		int sizeList = conversa.size();
+			for(int i = 0; i < sizeList; i++){
+				Mensagem minMsg = conversa.get(0);
+				for(Mensagem msg : conversa){
+					if(msg.getId()<minMsg.getId()){
+						minMsg = msg;
+					}}
+			conversa.remove(minMsg);
+			conversaOrganizada.add(minMsg);
+			}
+		return conversaOrganizada;
 	}
 
 	public static void apagarMensagem(String nomeindividuo, int id) throws Exception {
@@ -251,6 +289,7 @@ public class Fachada {
 		// localizar individuo no repositorio
 		// verificar se individuo é administrador
 		// listar os nomes dos participante que nao enviaram mensagens
+		
 		return null;
 	}
 
