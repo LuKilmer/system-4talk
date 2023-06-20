@@ -2,7 +2,7 @@ package backend;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.function.Predicate;
 
 import model.Grupo;
@@ -12,14 +12,21 @@ import model.Participante;
 import repository.Repositorio;
 
 public class Fachada {
-	private Fachada() {
-	}
-
+	
 	private static Repositorio repositorio = new Repositorio();
 	
 	public static void salvarDados() {
 		repositorio.salvarObjetos();
 	};
+
+	public static Individual localizarIndividual(String nome){
+
+		return repositorio.localizarIndividual(nome);
+	}
+
+	public static Grupo localizarGrupo(String name){
+		return repositorio.localizarGrupo(name);
+	}
 
 	public static ArrayList<Individual> listarIndividuos() {
 		return repositorio.getIndividuos();
@@ -289,7 +296,7 @@ public class Fachada {
 		// localizar individuo no repositorio
 		// verificar se individuo é administrador
 		// listar os nomes dos participante que nao enviaram mensagens
-		
+
 		return null;
 	}
 

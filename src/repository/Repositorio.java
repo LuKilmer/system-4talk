@@ -20,8 +20,12 @@ public class Repositorio {
 	private TreeMap<String,Participante> participantes = new TreeMap<>();
 	private TreeMap<Integer,Mensagem> mensagens = new TreeMap<>();
 	
+	public Repositorio(){
+		carregarObjetos();
+	}
 	
 	public ArrayList<Individual>getIndividuos(){
+		
 		ArrayList<Individual> IndividuosList = new ArrayList<>();
 		for (Participante part : this.participantes.values()) {
 			if (part instanceof Individual) {
@@ -60,23 +64,25 @@ public class Repositorio {
 
 	public void remover(Mensagem msg) {
 		this.mensagens.remove(msg.getId());
+		salvarObjetos();
 	}
 
 	public void adicionar(Individual ind) {
-		System.out.println(ind);
 		participantes.put(ind.getNome(), ind);	
+		salvarObjetos();
 		
 	}
 	
 	
 	public void adicionar(Grupo ind) {
-		System.out.println(ind.getNome());
-		participantes.put(ind.getNome(),ind);	
+		participantes.put(ind.getNome(),ind);
+		salvarObjetos();	
 		
 	}
 
 	public void adicionar(Mensagem msg) {
-		this.mensagens.put(msg.getId(), msg);	
+		this.mensagens.put(msg.getId(), msg);
+		salvarObjetos();
 		
 	}
 
@@ -156,12 +162,11 @@ public class Repositorio {
 			while(arquivo1.hasNextLine()) 	{
 				linha = arquivo1.nextLine().trim();	
 				partes = linha.split(";");
-				//System.out.println(Arrays.toString(partes));
 				nome = partes[0];
 				senha = partes[1];
 				administrador = partes[2];
 				Individual ind = new Individual(nome,senha,Boolean.parseBoolean(administrador));
-				this.adicionar(ind);
+				participantes.put(ind.getNome(), ind);
 			}
 			arquivo1.close();
 		} catch (Exception ex) {
