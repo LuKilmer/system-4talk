@@ -23,6 +23,13 @@ public class Repositorio {
 	public Repositorio(){
 		carregarObjetos();
 	}
+
+
+	public ArrayList<Mensagem> getMensagems(){
+		ArrayList<Mensagem> listaMensagem = new ArrayList<>();
+		for(Mensagem msg: mensagens.values()){listaMensagem.add(msg);}
+		return listaMensagem;
+	}
 	
 	public ArrayList<Individual>getIndividuos(){
 		

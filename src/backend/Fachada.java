@@ -36,10 +36,6 @@ public class Fachada {
 		return repositorio.getGrupos();
 	}
 
-	public static ArrayList<Mensagem> listarMensagens() {
-		return null;
-	}
-
 	public static ArrayList<Mensagem> listarMensagensEnviadas(String nome) throws Exception {
 		Individual ind = repositorio.localizarIndividual(nome);
 		if (ind == null)
@@ -49,7 +45,12 @@ public class Fachada {
 	}
 
 	public static ArrayList<Mensagem> listarMensagensRecebidas(String nome) throws Exception {
-		return null;
+		Individual ind = repositorio.localizarIndividual(nome);
+		if (ind == null) 
+			throw new Exception("listar  mensagens recebidas - nome nao existe:" + nome);
+		
+		return ind.getRecebidas();
+
 	}
 
 	public static void criarIndividuo(String nome, String senha) throws Exception {
@@ -81,7 +82,7 @@ public class Fachada {
 		 * O índividuo não existe — Então ele é criado com o valor de adm True.
 		 * O índividuo existe, mas não é adm — Ele recebe true no lugador do adm
 		 * O índividuo existe e é um adm — Retornamos uma Exception.
-		 */
+		*/
 		if (individuo == null) {
 			individuo = new Individual(nome, senha, true);
 			repositorio.adicionar(individuo);
@@ -92,7 +93,6 @@ public class Fachada {
 			throw new Exception("Esse índividuo já é um administrador!");
 
 	}
-
 	public static void criarGrupo(String nome) throws Exception {
 		// localizar nome no repositorio
 		// criar o grupo
@@ -163,9 +163,9 @@ public class Fachada {
 		int id = (int) Instant.now().toEpochMilli(); // Obtém o valor do timestamp em milissegundos
 		Mensagem enviada = new Mensagem(id, emitente, destinatario, texto);
 
-		if (destinatario instanceof Grupo g) {
+		if (destinatario instanceof Grupo) {
 
-			if (emitente.localizarGrupo(g.getNome()) == null)
+			if (emitente.localizarGrupo(destinatario.getNome()) == null)
 				throw new Exception("criar mensagem - grupo nao permitido:" + nomedestinatario);
 
 			/*
@@ -174,7 +174,7 @@ public class Fachada {
 			 * Em seguida, cada índividuo no grupo receberá a mensagem que foi enviada.
 			 */
 			emitente.adicionar(enviada);
-			g.adicionarRecebida(enviada);
+			destinatario.adicionarRecebida(enviada);
 
 			for (Participante participante : ((Grupo) destinatario).getIndividuos()) {
 				participante.adicionarRecebida(enviada);
@@ -239,7 +239,7 @@ public class Fachada {
 				conversa.add(msg);
 			}
 		}}
-		//metodo temporario de organização, pq estou com preguiça, precisa criar um método novo dentro da classe repositorio
+		//metodo temporario de organização, pq estou com preguiça, precisa criar um método novo dentro da classe 
 		ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
 		int sizeList = conversa.size();
 			for(int i = 0; i < sizeList; i++){
@@ -268,7 +268,7 @@ public class Fachada {
 		destinatario.removerRecebida(m);
 		repositorio.remover(m);
 
-		if (destinatario instanceof Grupo g) {
+		if (destinatario instanceof Grupo) {
 			ArrayList<Mensagem> lista = destinatario.getEnviadas();
 			lista.removeIf(new Predicate<Mensagem>() {
 				@Override
@@ -298,6 +298,10 @@ public class Fachada {
 		// listar os nomes dos participante que nao enviaram mensagens
 
 		return null;
+	}
+
+	public static ArrayList<Mensagem> listarMensagens() {
+		return repositorio.getMensagems();
 	}
 
 }

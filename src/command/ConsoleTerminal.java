@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class ConsoleTerminal {
     private static Scanner scanner = new Scanner(System.in);
+    private static Individual usuario = null;
     private static final List<String> listaDeComandos = Collections.unmodifiableList(
     new ArrayList<String>() {{
         add("1-Mostrar Individuos");
@@ -48,6 +49,7 @@ public class ConsoleTerminal {
 
 
     private static void usuarioMenu(){
+        System.err.println("Olá! "+ usuario.getNome() +"!");
         System.out.println("Enter para a lista de comandos");
         
             while(scanner.hasNextLine()){
@@ -72,11 +74,12 @@ public class ConsoleTerminal {
             String nome = scanner.nextLine();
             Individual ind = Fachada.localizarIndividual(nome);
             if(ind == null){
-                System.out.println("Erro ao digitar nome de login");
+                System.out.println("Esse usuario não existe");
             }else{
                 System.out.println("Senha:");
                 String senha = scanner.nextLine();
                 if(ind.getSenha().equals(senha)){
+                    usuario = ind;
                     usuarioMenu();
                 }
             }
