@@ -29,19 +29,16 @@ public class Mensagem {
 		return emitente;
 	}
 
-	public Participante getDesitnatario() {
-		return destinatario;
-	}
-
 	public LocalDateTime getDataHora() {
 		return dataHora;
+	}
+
+	public Participante getDestinatario() {
+		return this.destinatario;
 	}
 
 	public String toString() {
 		return "id: " + id + "\n" + emitente.getNome() + "disse: " + texto + "\n" + dataHora;
 	}
 
-    public Participante getDestinatario() {
-        return this.destinatario;
-    }
 }
