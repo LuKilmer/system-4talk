@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Participante {
 
 	private String nome;
-	private ArrayList<Mensagem> recebidas;
+	private ArrayList<Mensagem> recebidas = new ArrayList<>();
 
 	public Participante(String nome) {
 		this.nome = nome.strip();
@@ -30,8 +30,8 @@ public class Participante {
 		this.recebidas.add(this.recebidas.size(), m);
 	}
 
-    public ArrayList<Mensagem> getEnviadas() {
-        return null;
-    }
+	public ArrayList<Mensagem> getEnviadas() {
+		return null;
+	}
 
 }

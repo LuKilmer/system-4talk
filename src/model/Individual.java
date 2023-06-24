@@ -73,10 +73,20 @@ public class Individual extends Participante {
 	}
 
 	public Mensagem localizarEnviada(int id) {
+		for(Mensagem msg: this.enviadas){
+			if(msg.getId() == id){
+				return msg;
+			}
+		}
 		return null;
 	}
 
-	public Object localizarGrupo(String nome) {
+	public Grupo localizarGrupo(String nome) {
+		for(Grupo g: this.grupos){
+			if(g.getNome().equals(nome)){
+				return g;
+			}
+		}
 		return null;
 	}
 
