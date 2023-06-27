@@ -14,9 +14,9 @@ import model.Individual;
 import model.Mensagem;
 import backend.Fachada;
 
-public class Teste1 {
+public class Teste {
 
-	public Teste1(){
+	public Teste(){
 
 		/**
 		 * PARTICIPANTE INDIVIDUAL

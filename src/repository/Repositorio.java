@@ -89,7 +89,7 @@ public class Repositorio {
 
 	public void adicionar(Mensagem msg) {
 		this.mensagens.put(msg.getId(), msg);
-		salvarObjetos();
+
 		
 	}
 
@@ -196,6 +196,7 @@ public class Repositorio {
 					for (int i = 1; i < partes.length; i++) {
 						individuo = this.localizarIndividual(partes[i]);
 						grupo.adicionar(individuo);
+						individuo.adicionar(grupo);
 					}
 				//this.adicionar(grupo);
 				participantes.put(grupo.getNome(),grupo);

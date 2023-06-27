@@ -147,6 +147,7 @@ public class Fachada {
 	}
 
 	public static void criarMensagem(String nomeemitente, String nomedestinatario, String texto) throws Exception {
+		repositorio.carregarObjetos();
 		if (texto.isEmpty())
 			throw new Exception("criar mensagem - texto vazio:");
 
@@ -158,7 +159,7 @@ public class Fachada {
 		if (destinatario == null)
 			throw new Exception("criar mensagem - destinatario nao existe:" + nomeemitente);
 
-		/* Foi uma ideia doida minha */
+		/* Foi uma ideia doida minha*/ 
 		int id = repositorio.getMensagems().size() + 1;
 
 		Mensagem enviada = new Mensagem(id, emitente, destinatario, texto);
@@ -189,6 +190,7 @@ public class Fachada {
 			destinatario.adicionarRecebida(enviada);
 		}
 		repositorio.adicionar(enviada);
+		repositorio.salvarObjetos();
 
 		// cont.
 		// gerar id no repositorio para a mensagem
