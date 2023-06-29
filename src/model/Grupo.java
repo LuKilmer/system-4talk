@@ -36,4 +36,11 @@ public class Grupo extends Participante {
 		this.individuos = individuos;
 	}
 
+	@Override
+	public void removerRecebida(Mensagem recebida) {
+		for (Participante i : this.individuos) {
+			i.removerRecebida(recebida);
+		}
+		this.getRecebidas().remove(recebida);
+	}
 }

@@ -2,8 +2,6 @@ package backend;
 
 import java.util.ArrayList;
 
-import java.util.function.Predicate;
-
 import model.Grupo;
 import model.Individual;
 import model.Mensagem;
@@ -143,11 +141,13 @@ public class Fachada {
 			throw new Exception(" Participante não encontrado: " + nomeindividuo);
 		else
 			participante.remover(grupo);
-		repositorio.salvarObjetos();
+
+		if (grupo.getIndividuos().size() == 0)
+			repositorio.remover(grupo);
+		/* repositorio.salvarObjetos(); */
 	}
 
 	public static void criarMensagem(String nomeemitente, String nomedestinatario, String texto) throws Exception {
-		repositorio.carregarObjetos();
 		if (texto.isEmpty())
 			throw new Exception("criar mensagem - texto vazio:");
 
@@ -159,7 +159,7 @@ public class Fachada {
 		if (destinatario == null)
 			throw new Exception("criar mensagem - destinatario nao existe:" + nomeemitente);
 
-		/* Foi uma ideia doida minha*/ 
+		/* Foi uma ideia doida minha */
 		int id = repositorio.getMensagems().size() + 1;
 
 		Mensagem enviada = new Mensagem(id, emitente, destinatario, texto);
@@ -270,25 +270,31 @@ public class Fachada {
 		if (m == null)
 			throw new Exception("apagar mensagem - mensagem nao pertence a este individuo:" + id);
 
-		emitente.remover(m);
+		emitente.removerEnviada(m);
+
 		Participante destinatario = m.getDestinatario();
+
 		destinatario.removerRecebida(m);
+
 		repositorio.remover(m);
 
-		if (destinatario instanceof Grupo) {
-			ArrayList<Mensagem> lista = destinatario.getEnviadas();
-			lista.removeIf(new Predicate<Mensagem>() {
-				@Override
-				public boolean test(Mensagem t) {
-					if (t.getId() == m.getId()) {
-						t.getDestinatario().removerRecebida(t);
-						repositorio.remover(t);
-						return true; // apaga mensagem da lista
-					} else
-						return false;
-				}
-			});
-		}
+		/*
+		 * if (destinatario instanceof Grupo) {
+		 * ArrayList<Mensagem> lista = destinatario.getRecebidas();
+		 * lista.removeIf(new Predicate<Mensagem>() {
+		 * 
+		 * @Override
+		 * public boolean test(Mensagem t) {
+		 * if (t.getId() == m.getId()) {
+		 * t.getDestinatario().removerRecebida(t);
+		 * repositorio.remover(t);
+		 * return true; // apaga mensagem da lista
+		 * } else
+		 * return false;
+		 * }
+		 * });
+		 * }
+		 */
 	}
 
 	public static ArrayList<Mensagem> espionarMensagens(String nomeadministrador, String termo) throws Exception {

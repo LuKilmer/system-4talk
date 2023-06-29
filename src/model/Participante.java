@@ -24,14 +24,11 @@ public class Participante {
 	}
 
 	public void removerRecebida(Mensagem m) {
+		this.recebidas.remove(m);
 	}
 
 	public void adicionarRecebida(Mensagem m) {
 		this.recebidas.add(this.recebidas.size(), m);
-	}
-
-	public ArrayList<Mensagem> getEnviadas() {
-		return null;
 	}
 
 }

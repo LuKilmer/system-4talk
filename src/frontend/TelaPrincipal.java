@@ -4,6 +4,10 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.util.Random;
+
 public class TelaPrincipal {
 
 	private JFrame frame;
@@ -15,8 +19,22 @@ public class TelaPrincipal {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaPrincipal window = new TelaPrincipal();
-					window.frame.setVisible(true);
+					int i = 10;
+					while (i > 1) {
+						TelaPrincipal window = new TelaPrincipal();
+						JFrame frame = window.frame;
+						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						frame.setSize(300, 200);
+						Dimension screenSize = getTelaDimension();
+						int randomX = getRandomPosition(screenSize.width, frame.getWidth());
+						int randomY = getRandomPosition(screenSize.height, frame.getHeight());
+						frame.setLocation(randomX, randomY);
+
+						frame.setVisible(true);
+						i += 1;
+						if (i % 5 == 0)
+							Thread.sleep(1000);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -40,5 +58,15 @@ public class TelaPrincipal {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	
+	private static Dimension getTelaDimension() {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		return toolkit.getScreenSize();
+	}
+
+	private static int getRandomPosition(int screenSize, int frameSize) {
+		Random random = new Random();
+		int maxPosition = screenSize - frameSize;
+		return random.nextInt(maxPosition);
+	}
+
 }

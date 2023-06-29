@@ -16,11 +16,11 @@
   </tr>
   <tr>
     <td>1-Participantes possuem nome único, que não pode ser vazio</td>
-    <td align=center><b>fazer<b></td>
+    <td align=center><b>FEITO<b></td>
   </tr>
   <tr>
     <td>2-Mensagens possuem id único sequencial (1,2,3...), gerado pelo sistema, e data-hora do computador</td>
-    <td align=center><b>fazer<b></td>
+    <td align=center><b>FEITO<b></td>
   </tr>
   <tr>
     <td>3-Um indivíduo não pode ter senha vazia</td>
@@ -28,19 +28,19 @@
   </tr>
   <tr>
     <td>4-Uma mensagem não pode ter texto vazio</td>
-    <td align=center><b>fazer<b></td>
+    <td align=center><b>FEITO<b></td>
   </tr>
   <tr>
     <td>5-Uma mensagem tem um emitente (Individual) e um destinatário (Participante) que podem ser iguais ou diferentes</td>
-    <td align=center><b>fazer<b></td>
+    <td align=center><b>FEITO<b></td>
   </tr>
   <tr>
     <td>6- Quando o destinatário de uma mensagem for um grupo, todos os indivíduos do grupo recebem a referida mensagem</td>
-    <td align=center><b>fazer<b></td>
+    <td align=center><b>FEITO<b></td>
   </tr>
   <tr>
     <td>7- Uma conversa entre um indivíduo e um participante (indivíduo ou grupo) é uma lista de mensagens, enviadas e recebidas entre eles, organizada em ordem cronológica</td>
-    <td align=center><b>fazer<b></td>
+    <td align=center><b>FEITO<b></td>
   </tr>
   <tr>
   	<td>8- Uma mensagem excluída do sistema deve ser removida do seu emitente e do seu destinatário e, se o destinatário for um grupo, ela deve ser removida por todos os indivíduos desse grupo</td>

@@ -59,7 +59,7 @@ public class Individual extends Participante {
 
 	}
 
-	public boolean remover(Mensagem mensagem) {
+	public boolean removerEnviada(Mensagem mensagem) {
 		return this.enviadas.remove(mensagem);
 	}
 
@@ -69,12 +69,13 @@ public class Individual extends Participante {
 		if (this.administrador)
 			checkAdministrador = "Sim,";
 
-		return "Nome: " + this.getNome() +" e sua senha é \""+this.getSenha()+"\", " + checkAdministrador + " administrador." + "grupos=" + grupos;
+		return "Nome: " + this.getNome() + " e sua senha é \"" + this.getSenha() + "\", " + checkAdministrador
+				+ " administrador." + "\n grupos=" + grupos;
 	}
 
 	public Mensagem localizarEnviada(int id) {
-		for(Mensagem msg: this.enviadas){
-			if(msg.getId() == id){
+		for (Mensagem msg : this.enviadas) {
+			if (msg.getId() == id) {
 				return msg;
 			}
 		}
@@ -82,23 +83,12 @@ public class Individual extends Participante {
 	}
 
 	public Grupo localizarGrupo(String nome) {
-		for(Grupo g: this.grupos){
-			if(g.getNome().equals(nome)){
+		for (Grupo g : this.grupos) {
+			if (g.getNome().equals(nome)) {
 				return g;
 			}
 		}
 		return null;
 	}
-
-	/*
-	 * public String getAdministrador() {
-	 * if (this.isAdministrador()) {
-	 * return this.getNome();
-	 * } else {
-	 * return null;
-	 * }
-	 * }
-	 * 
-	 */
 
 }

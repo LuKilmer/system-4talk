@@ -17,22 +17,23 @@ import model.Mensagem;
 import model.Participante;
 
 public class Repositorio {
-	private TreeMap<String,Participante> participantes = new TreeMap<>();
-	private TreeMap<Integer,Mensagem> mensagens = new TreeMap<>();
-	
-	public Repositorio(){
+	private TreeMap<String, Participante> participantes = new TreeMap<>();
+	private TreeMap<Integer, Mensagem> mensagens = new TreeMap<>();
+
+	public Repositorio() {
 		carregarObjetos();
 	}
 
-
-	public ArrayList<Mensagem> getMensagems(){
+	public ArrayList<Mensagem> getMensagems() {
 		ArrayList<Mensagem> listaMensagem = new ArrayList<>();
-		for(Mensagem msg: mensagens.values()){listaMensagem.add(msg);}
+		for (Mensagem msg : mensagens.values()) {
+			listaMensagem.add(msg);
+		}
 		return listaMensagem;
 	}
-	
-	public ArrayList<Individual>getIndividuos(){
-		
+
+	public ArrayList<Individual> getIndividuos() {
+
 		ArrayList<Individual> IndividuosList = new ArrayList<>();
 		for (Participante part : this.participantes.values()) {
 			if (part instanceof Individual) {
@@ -42,27 +43,27 @@ public class Repositorio {
 		return IndividuosList;
 	}
 
-	public ArrayList<Grupo>getGrupos() {
+	public ArrayList<Grupo> getGrupos() {
 		ArrayList<Grupo> ListaDeGrupos = new ArrayList<>();
-		for(Participante aux: participantes.values()){
+		for (Participante aux : participantes.values()) {
 			if (aux instanceof Grupo) {
 				ListaDeGrupos.add((Grupo) aux);
 			}
 		}
 		/*
-		ArrayList<Individual> IndividuosList = this.getIndividuos();
-		ArrayList<Grupo> GroupList = new ArrayList<>();
-		
-		for(Individual person: IndividuosList) {
-			if(person.getGrupos() != null){
-				for(Grupo group: person.getGrupos()) {
-				if(!GroupList.contains(group)) {
-					GroupList.add(group);
-				}
-			}
-			}
-			
-		}
+		 * ArrayList<Individual> IndividuosList = this.getIndividuos();
+		 * ArrayList<Grupo> GroupList = new ArrayList<>();
+		 * 
+		 * for(Individual person: IndividuosList) {
+		 * if(person.getGrupos() != null){
+		 * for(Grupo group: person.getGrupos()) {
+		 * if(!GroupList.contains(group)) {
+		 * GroupList.add(group);
+		 * }
+		 * }
+		 * }
+		 * 
+		 * }
 		 */
 		return ListaDeGrupos;
 	}
@@ -75,22 +76,20 @@ public class Repositorio {
 	}
 
 	public void adicionar(Individual ind) {
-		participantes.put(ind.getNome(), ind);	
+		participantes.put(ind.getNome(), ind);
 		salvarObjetos();
-		
+
 	}
-	
-	
+
 	public void adicionar(Grupo ind) {
-		participantes.put(ind.getNome(),ind);
-		salvarObjetos();	
-		
+		participantes.put(ind.getNome(), ind);
+		salvarObjetos();
+
 	}
 
 	public void adicionar(Mensagem msg) {
 		this.mensagens.put(msg.getId(), msg);
 
-		
 	}
 
 	public Individual localizarIndividual(String nome) {
@@ -162,17 +161,17 @@ public class Repositorio {
 		String linha;
 		String[] partes;
 
-		try	{
-			String nome,senha,administrador;
-			File f = new File( new File("./data/individuos.csv").getCanonicalPath())  ;
-			Scanner arquivo1 = new Scanner(f);	 //  pasta do projeto
-			while(arquivo1.hasNextLine()) 	{
-				linha = arquivo1.nextLine().trim();	
+		try {
+			String nome, senha, administrador;
+			File f = new File(new File("./data/individuos.csv").getCanonicalPath());
+			Scanner arquivo1 = new Scanner(f); // pasta do projeto
+			while (arquivo1.hasNextLine()) {
+				linha = arquivo1.nextLine().trim();
 				partes = linha.split(";");
 				nome = partes[0];
 				senha = partes[1];
 				administrador = partes[2];
-				Individual ind = new Individual(nome,senha,Boolean.parseBoolean(administrador));
+				Individual ind = new Individual(nome, senha, Boolean.parseBoolean(administrador));
 				participantes.put(ind.getNome(), ind);
 			}
 			arquivo1.close();
@@ -198,8 +197,8 @@ public class Repositorio {
 						grupo.adicionar(individuo);
 						individuo.adicionar(grupo);
 					}
-				//this.adicionar(grupo);
-				participantes.put(grupo.getNome(),grupo);
+				// this.adicionar(grupo);
+				participantes.put(grupo.getNome(), grupo);
 			}
 			arquivo2.close();
 		} catch (Exception ex) {
@@ -222,61 +221,63 @@ public class Repositorio {
 				texto = partes[3];
 				emitente = this.localizarParticipante(nomeemitente);
 				destinatario = this.localizarParticipante(nomedestinatario);
-				m = new Mensagem(Integer.parseInt(id),emitente,destinatario,texto);
-				this.mensagens.put(m.getId(), m);	
-			} 
+				m = new Mensagem(Integer.parseInt(id), emitente, destinatario, texto);
+				this.mensagens.put(m.getId(), m);
+			}
 			arquivo3.close();
 		} catch (Exception ex) {
 			throw new RuntimeException("leitura arquivo de mensagens:" + ex.getMessage());
 		}
 	}
 
-	
-	
-
-	public void	salvarObjetos()  {
-		//gravar nos arquivos csv os objetos que estão no repositório
-		try	{
-			File f = new File( new File("./data/mensagens.csv").getCanonicalPath())  ;
-			FileWriter arquivo1 = new FileWriter(f); 
-			for(Mensagem m : mensagens.values()) 	{
-				arquivo1.write(	m.getId()+";"+
-						m.getEmitente().getNome()+";"+
-						m.getDestinatario().getNome()+";"+
-						m.getTexto()+"\n");	
-			} 
+	public void salvarObjetos() {
+		// gravar nos arquivos csv os objetos que estão no repositório
+		try {
+			File f = new File(new File("./data/mensagens.csv").getCanonicalPath());
+			FileWriter arquivo1 = new FileWriter(f);
+			for (Mensagem m : mensagens.values()) {
+				arquivo1.write(m.getId() + ";" +
+						m.getEmitente().getNome() + ";" +
+						m.getDestinatario().getNome() + ";" +
+						m.getTexto() + "\n");
+			}
 			arquivo1.close();
 
 		} catch (Exception e) {
 			throw new RuntimeException("problema na criação do arquivo  mensagens " + e.getMessage());
 		}
 
-		try	{
-			File f = new File( new File("./data/individuos.csv").getCanonicalPath())  ;
-			FileWriter arquivo2 = new FileWriter(f) ; 
-			for(Individual ind : this.getIndividuos()) {
-				arquivo2.write(ind.getNome() +";"+ ind.getSenha() +";"+ ind.getAdministrador() +"\n");	
-			} 
+		try {
+			File f = new File(new File("./data/individuos.csv").getCanonicalPath());
+			FileWriter arquivo2 = new FileWriter(f);
+			for (Individual ind : this.getIndividuos()) {
+				arquivo2.write(ind.getNome() + ";" + ind.getSenha() + ";" + ind.getAdministrador() + "\n");
+			}
 			arquivo2.close();
 		} catch (Exception e) {
 			throw new RuntimeException("problema na criação do arquivo  individuos " + e.getMessage());
 		}
 
-		try	{
-			File f = new File( new File("./data/grupos.csv").getCanonicalPath())  ;
-			FileWriter arquivo3 = new FileWriter(f) ; 
-			for(Grupo g : this.getGrupos()) {
-				String texto="";
-				if(g.getIndividuos()!=null){
-					for(Individual ind : g.getIndividuos())
-					texto += ";" + ind.getNome();
+		try {
+			File f = new File(new File("./data/grupos.csv").getCanonicalPath());
+			FileWriter arquivo3 = new FileWriter(f);
+			for (Grupo g : this.getGrupos()) {
+				String texto = "";
+				if (g.getIndividuos() != null) {
+					for (Individual ind : g.getIndividuos())
+						texto += ";" + ind.getNome();
 				}
-				arquivo3.write(g.getNome() + texto + "\n");	
-			} 
+				arquivo3.write(g.getNome() + texto + "\n");
+			}
 			arquivo3.close();
 		} catch (Exception e) {
 			throw new RuntimeException("problema na criação do arquivo  grupos " + e.getMessage());
 		}
+	}
+
+	public void remover(Participante p) {
+		this.participantes.remove(p.getNome());
+		this.salvarObjetos();
 	}
 
 }

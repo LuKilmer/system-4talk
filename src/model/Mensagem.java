@@ -38,7 +38,7 @@ public class Mensagem {
 	}
 
 	public String toString() {
-		return "id: " + id + "\n" + emitente.getNome() + "disse: " + texto + "\n" + dataHora;
+		return "id: " + id + "\n" + emitente.getNome() + " : " + texto + "\n" + dataHora;
 	}
 
 }
