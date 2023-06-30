@@ -15,6 +15,19 @@ public class Fachada {
 	public static void salvarDados() {
 		repositorio.salvarObjetos();
 	};
+	public static Individual validarIndividuo(String nome, String senha) {
+		Individual usuario = localizarIndividual(nome);
+		if(usuario == null){
+			return null;
+		}else{
+			if(usuario.getSenha().equals(senha)){
+				return usuario;
+			}else{
+				return null;
+			}
+		}
+		
+	}
 
 	public static Individual localizarIndividual(String nome) {
 
@@ -148,6 +161,7 @@ public class Fachada {
 	}
 
 	public static void criarMensagem(String nomeemitente, String nomedestinatario, String texto) throws Exception {
+		repositorio.carregarObjetos();
 		if (texto.isEmpty())
 			throw new Exception("criar mensagem - texto vazio:");
 
@@ -189,6 +203,7 @@ public class Fachada {
 			emitente.adicionar(enviada);
 			destinatario.adicionarRecebida(enviada);
 		}
+		
 		repositorio.adicionar(enviada);
 		repositorio.salvarObjetos();
 
@@ -205,6 +220,7 @@ public class Fachada {
 	}
 
 	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) throws Exception {
+		repositorio.carregarObjetos();
 		// localizar emitente no repositorio
 		// localizar destinatario no repositorio
 		// obter do emitente a lista enviadas
@@ -228,6 +244,8 @@ public class Fachada {
 		}
 		ArrayList<Mensagem> enviadas = emitente.getEnviadas();
 		ArrayList<Mensagem> recebidas = emitente.getRecebidas();
+		System.out.println(emitente.getRecebidas());
+		System.out.println(emitente.getEnviadas());
 		ArrayList<Mensagem> conversa = new ArrayList<>();
 		if (enviadas.size() > 0) {
 			for (Mensagem msg : enviadas) {
@@ -258,10 +276,13 @@ public class Fachada {
 			conversa.remove(minMsg);
 			conversaOrganizada.add(minMsg);
 		}
+		System.out.println(conversaOrganizada);
 		return conversaOrganizada;
 	}
 
 	public static void apagarMensagem(String nomeindividuo, int id) throws Exception {
+		repositorio.carregarObjetos();
+
 		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
 		if (emitente == null)
 			throw new Exception("apagar mensagem - nome nao existe:" + nomeindividuo);
@@ -269,13 +290,10 @@ public class Fachada {
 		Mensagem m = emitente.localizarEnviada(id);
 		if (m == null)
 			throw new Exception("apagar mensagem - mensagem nao pertence a este individuo:" + id);
-
 		emitente.removerEnviada(m);
 
 		Participante destinatario = m.getDestinatario();
-
 		destinatario.removerRecebida(m);
-
 		repositorio.remover(m);
 
 		/*
@@ -360,5 +378,7 @@ public class Fachada {
 	public static ArrayList<Mensagem> listarMensagens() {
 		return repositorio.getMensagems();
 	}
+
+	
 
 }

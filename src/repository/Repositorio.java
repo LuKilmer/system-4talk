@@ -222,6 +222,12 @@ public class Repositorio {
 				emitente = this.localizarParticipante(nomeemitente);
 				destinatario = this.localizarParticipante(nomedestinatario);
 				m = new Mensagem(Integer.parseInt(id), emitente, destinatario, texto);
+				destinatario.adicionarRecebida(m);
+				
+				if(emitente instanceof Individual ind){
+					ind.adicionar(m);
+				}
+				
 				this.mensagens.put(m.getId(), m);
 			}
 			arquivo3.close();

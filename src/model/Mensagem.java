@@ -20,6 +20,9 @@ public class Mensagem {
 	public int getId() {
 		return id;
 	}
+	public LocalDateTime getData(){
+		return this.dataHora;
+	}
 
 	public String getTexto() {
 		return texto;
@@ -27,10 +30,6 @@ public class Mensagem {
 
 	public Participante getEmitente() {
 		return emitente;
-	}
-
-	public LocalDateTime getDataHora() {
-		return dataHora;
 	}
 
 	public Participante getDestinatario() {

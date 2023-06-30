@@ -40,6 +40,9 @@ public class ConsoleTerminal {
         }
     }
 
+
+
+
     private static void mostrarMensagens(){
         ArrayList<Mensagem> lista = Fachada.listarMensagens();
         for(Mensagem mensagem: lista){
@@ -50,18 +53,17 @@ public class ConsoleTerminal {
 
     private static void usuarioMenu(){
         System.err.println("Olá! "+ usuario.getNome() +"!");
-        System.out.println("Enter para a lista de comandos");
+        System.out.println("'0' para a lista de comandos");
         
             while(scanner.hasNextLine()){
                 String command = scanner.nextLine();
-                if(command.equals("exit")){
+                if(command.equals("4")){
                     break;
                 }else{
                     if(command.equals("0")){
                          for(String lines: listaDeComandosUsuario){System.out.println(lines);}
                     }else{
                         processarComando("1"+command);
-                  
                     }
                     
                 }
@@ -118,6 +120,33 @@ public class ConsoleTerminal {
         
     }
 
+     private static void lerMensagem() {
+        
+    }
+
+    private static void mudarSenha() {
+
+    }
+
+    private static void enivarMensagem() {
+        try {
+            if(usuario==null){
+                throw new Exception("Não logado");
+            }else{
+                System.out.println("Para quem é a mensagem?");
+                String destinatario = scanner.nextLine();
+                System.out.println("Escreva sua mensagem:");
+                String texto = scanner.nextLine();
+                Fachada.criarMensagem(usuario.getNome(), destinatario, texto);
+                System.out.println("Mensagem enviada!");
+            }
+            } catch (Exception e) {
+                System.out.println("Mensagem não enviada...");
+                e.printStackTrace();
+            }
+    }
+
+
 
 
 
@@ -141,25 +170,25 @@ public class ConsoleTerminal {
             case "6":
                 criarGrupo();
                 break;
+            //opções do usuarios logado
             case "11":
-
+                enivarMensagem();
                 break;
             case "12":
-
+                mudarSenha();
                 break;
             case "13":
-
+                lerMensagem();
                 break;
-            case "14":
-
-                break;
+    
         }
     }
 
  
 
+   
     public static void start(){
-        System.out.println("Enter para a lista de comandos");
+        System.out.println("'0' para a lista de comandos");
         
             while(scanner.hasNextLine()){
                 String command = scanner.nextLine();
