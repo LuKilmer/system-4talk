@@ -175,7 +175,8 @@ public class Fachada {
 			throw new Exception("criar mensagem - destinatario nao existe:" + nomeemitente);
 
 		/* Foi uma ideia doida minha */
-		int id = repositorio.getMensagems().size() + 1;
+		int id = repositorio.getMensagems().get(
+				repositorio.getMensagems().size() - 1).getId() + 1;
 
 		Mensagem enviada = new Mensagem(id, emitente, destinatario, texto);
 
@@ -202,18 +203,24 @@ public class Fachada {
 			 * Adicionar as copias no repositório
 			 */
 			enviada.setTexto(emitente.getNome() + " / " + texto);
-			for (Participante participante : ((Grupo) destinatario).getIndividuos()) {
 
-				if (!participante.equals(participante)) {
-					participante.adicionarRecebida(enviada);
+			/* O grupo é o novo emitente da mensagem */
+			enviada.setEmitente(destinatario);
+			emitente.adicionarEnviada(enviada);
+
+			for (Participante p : ((Grupo) destinatario).getIndividuos()) {
+
+				if (!p.equals(emitente)) {
+					enviada.setDestinario(p);
+					p.adicionarRecebida(enviada);
 					repositorio.adicionar(enviada);
 				}
 			}
-			destinatario.adicionarEnviada(enviada); // o gruo acaba enviando a mensagem logo, ele adiciona a enviadas.
-		} else
+		} else {
+			emitente.adicionarEnviada(enviada);
 			repositorio.adicionar(enviada);
+		}
 
-		emitente.adicionarEnviada(enviada);
 		destinatario.adicionarRecebida(enviada);
 
 		repositorio.salvarObjetos();
@@ -338,11 +345,34 @@ public class Fachada {
 		Mensagem m = emitente.localizarEnviada(id);
 		if (m == null)
 			throw new Exception("apagar mensagem - mensagem nao pertence a este individuo:" + id);
-		emitente.removerEnviada(m);
 
 		Participante destinatario = m.getDestinatario();
+
 		destinatario.removerRecebida(m);
-		repositorio.remover(m);
+
+		if (destinatario instanceof Grupo) {
+			ArrayList<Individual> participantes = ((Grupo) destinatario).getIndividuos();
+
+			/* Remove a mensagem Recebida para cada participante */
+			for (Participante p : participantes) {
+				/* Remove da lista de recebidas, a mensagem escolhida para ser removida */
+				if (!p.equals(emitente)) {
+
+					p.removerRecebida(m);
+
+					destinatario.removerEnviada(m);
+
+					repositorio.remover(m);
+				}
+			}
+
+		} else {
+			emitente.removerEnviada(m);
+			repositorio.remover(m);
+		}
+
+		/* Aquele que enviou a mensagem, remove o seu laço com a mensagem. */
+		Fachada.salvarDados();
 
 		/*
 		 * if (destinatario instanceof Grupo) {

@@ -48,4 +48,12 @@ public class Mensagem {
 	public boolean equals(Mensagem m) {
 		return (this.id == m.getId());
 	}
+
+	public void setEmitente(Participante p) {
+		this.emitente = p;
+	}
+
+	public void setDestinario(Participante p) {
+		this.destinatario = p;
+	}
 }
