@@ -15,18 +15,19 @@ public class Fachada {
 	public static void salvarDados() {
 		repositorio.salvarObjetos();
 	};
+
 	public static Individual validarIndividuo(String nome, String senha) {
 		Individual usuario = localizarIndividual(nome);
-		if(usuario == null){
+		if (usuario == null) {
 			return null;
-		}else{
-			if(usuario.getSenha().equals(senha)){
+		} else {
+			if (usuario.equals(usuario)) {
 				return usuario;
-			}else{
+			} else {
 				return null;
 			}
 		}
-		
+
 	}
 
 	public static Individual localizarIndividual(String nome) {
@@ -178,6 +179,11 @@ public class Fachada {
 
 		Mensagem enviada = new Mensagem(id, emitente, destinatario, texto);
 
+		/*
+		 * O Emitente deve adicionar a mensagem enviada em sua caixa de enviados.
+		 * O Destinatário deve adicionar a mensagem enviada em sua caixa de recebidas.
+		 */
+
 		if (destinatario instanceof Grupo) {
 
 			if (emitente.localizarGrupo(destinatario.getNome()) == null)
@@ -188,23 +194,28 @@ public class Fachada {
 			 * O Grupo deve adicionar a mensagem enviada em sua caixa de recebidas.
 			 * Em seguida, cada índividuo no grupo receberá a mensagem que foi enviada.
 			 */
-			emitente.adicionar(enviada);
-			destinatario.adicionarRecebida(enviada);
 
-			for (Participante participante : ((Grupo) destinatario).getIndividuos()) {
-				participante.adicionarRecebida(enviada);
-
-			}
-		} else {
 			/*
-			 * O Emitente deve adicionar a mensagem enviada em sua caixa de enviados.
-			 * O Destinatário deve adicionar a mensagem enviada em sua caixa de recebidas.
+			 * Se o destinatário for um grupo, envia cópias da mensagem (com mesmo id) do
+			 * grupo para os membros desse grupo (exceto para emitente que criou a mensagem
+			 * original), concatenando ao texto o nome do emitente, na forma “nome/texto”.
+			 * Adicionar as copias no repositório
 			 */
-			emitente.adicionar(enviada);
-			destinatario.adicionarRecebida(enviada);
-		}
-		
-		repositorio.adicionar(enviada);
+			enviada.setTexto(emitente.getNome() + " / " + texto);
+			for (Participante participante : ((Grupo) destinatario).getIndividuos()) {
+
+				if (!participante.equals(participante)) {
+					participante.adicionarRecebida(enviada);
+					repositorio.adicionar(enviada);
+				}
+			}
+			destinatario.adicionarEnviada(enviada); // o gruo acaba enviando a mensagem logo, ele adiciona a enviadas.
+		} else
+			repositorio.adicionar(enviada);
+
+		emitente.adicionarEnviada(enviada);
+		destinatario.adicionarRecebida(enviada);
+
 		repositorio.salvarObjetos();
 
 		// cont.
@@ -242,42 +253,79 @@ public class Fachada {
 		if (destinatario == null) {
 			throw new Exception("criar mensagem - destinatario nao existe:" + nomedestinatario);
 		}
-		ArrayList<Mensagem> enviadas = emitente.getEnviadas();
-		ArrayList<Mensagem> recebidas = emitente.getRecebidas();
+
 		System.out.println(emitente.getRecebidas());
 		System.out.println(emitente.getEnviadas());
+		ArrayList<Mensagem> mensagensEnviadas = emitente.getEnviadas();
+		ArrayList<Mensagem> mensagensRecebidas = emitente.getRecebidas();
 		ArrayList<Mensagem> conversa = new ArrayList<>();
-		if (enviadas.size() > 0) {
-			for (Mensagem msg : enviadas) {
-				if (msg.getDestinatario().getNome().equals(nomedestinatario)) {
-					conversa.add(msg);
-				}
-			}
-		}
+		// ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
 
-		if (recebidas.size() > 0) {
-			for (Mensagem msg : recebidas) {
-				if (msg.getEmitente().getNome().equals(nomedestinatario)) {
-					conversa.add(msg);
+		int indexEnviada = 0;
+		int indexRecebida = 0;
+
+		while (conversa.size() < (mensagensEnviadas.size() + mensagensRecebidas.size())) {
+
+			// Checamos se o index não irá extrapolar o tamanho dos array
+			if (indexEnviada >= mensagensEnviadas.size()) {
+				conversa.addAll(mensagensRecebidas.subList(indexRecebida, mensagensRecebidas.size()));
+
+			} else if (indexRecebida >= mensagensRecebidas.size()) {
+				conversa.addAll(mensagensEnviadas.subList(indexEnviada, mensagensEnviadas.size()));
+
+			} else {
+				// Se não extrapolar, coletamos as mensagens que iremos comparar
+				Mensagem enviada = mensagensEnviadas.get(indexEnviada);
+				Mensagem recebida = mensagensRecebidas.get(indexRecebida);
+
+				// caso as duas coleções ainda possuam mensagens.
+				// Checa se a mensagem enviada é anterior a mensagem recebida naquela conversa
+				// pelo ID.
+
+				if (enviada.getId() < recebida.getId()) {
+					conversa.add(enviada);
+					indexEnviada += 1;
+				} else {
+					conversa.add(recebida);
+					indexRecebida += 1;
 				}
 			}
+
 		}
-		// metodo temporario de organização, pq estou com preguiça, precisa criar um
-		// método novo dentro da classe
-		ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
-		int sizeList = conversa.size();
-		for (int i = 0; i < sizeList; i++) {
-			Mensagem minMsg = conversa.get(0);
-			for (Mensagem msg : conversa) {
-				if (msg.getId() < minMsg.getId()) {
-					minMsg = msg;
-				}
-			}
-			conversa.remove(minMsg);
-			conversaOrganizada.add(minMsg);
-		}
-		System.out.println(conversaOrganizada);
-		return conversaOrganizada;
+		return conversa;
+		/*
+		 * if (mensagensEnviadas.size() > 0) {
+		 * for (Mensagem msg : mensagensEnviadas) {
+		 * if (msg.getDestinatario().getNome().equals(nomedestinatario)) {
+		 * conversa.add(msg);
+		 * }
+		 * }
+		 * }
+		 * 
+		 * if (mensagensRecebidas.size() > 0) {
+		 * for (Mensagem msg : mensagensRecebidas) {
+		 * if (msg.getEmitente().getNome().equals(nomedestinatario)) {
+		 * conversa.add(msg);
+		 * }
+		 * }
+		 * }
+		 * // metodo temporario de organização, pq estou com preguiça, precisa criar um
+		 * // método novo dentro da classe
+		 * int sizeList = conversa.size();
+		 * for (int i = 0; i < sizeList; i++) {
+		 * Mensagem minMsg = conversa.get(0);
+		 * for (Mensagem msg : conversa) {
+		 * if (msg.getId() < minMsg.getId()) {
+		 * minMsg = msg;
+		 * }
+		 * }
+		 * conversa.remove(minMsg);
+		 * conversaOrganizada.add(minMsg);
+		 * }
+		 * System.out.println(conversaOrganizada);
+		 * 
+		 * return conversaOrganizada;
+		 */
 	}
 
 	public static void apagarMensagem(String nomeindividuo, int id) throws Exception {
@@ -378,7 +426,5 @@ public class Fachada {
 	public static ArrayList<Mensagem> listarMensagens() {
 		return repositorio.getMensagems();
 	}
-
-	
 
 }

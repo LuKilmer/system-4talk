@@ -20,12 +20,17 @@ public class Mensagem {
 	public int getId() {
 		return id;
 	}
-	public LocalDateTime getData(){
+
+	public LocalDateTime getData() {
 		return this.dataHora;
 	}
 
 	public String getTexto() {
 		return texto;
+	}
+
+	public void setTexto(String texto) {
+		this.texto = texto;
 	}
 
 	public Participante getEmitente() {
@@ -40,4 +45,7 @@ public class Mensagem {
 		return "id: " + id + "\n" + emitente.getNome() + " : " + texto + "\n" + dataHora;
 	}
 
+	public boolean equals(Mensagem m) {
+		return (this.id == m.getId());
+	}
 }

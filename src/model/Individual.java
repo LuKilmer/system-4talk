@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Individual extends Participante {
 	private String senha;
 	private boolean administrador;
-	private ArrayList<Mensagem> enviadas = new ArrayList<>();
 	private ArrayList<Grupo> grupos = new ArrayList<>();
 
 	public Individual(String nome, String senha, boolean administrador) throws Exception {
@@ -34,10 +33,6 @@ public class Individual extends Participante {
 		this.administrador = valor;
 	}
 
-	public ArrayList<Mensagem> getEnviadas() {
-		return enviadas;
-	}
-
 	public ArrayList<Grupo> getGrupos() {
 		return grupos;
 	}
@@ -54,15 +49,6 @@ public class Individual extends Participante {
 		return this.grupos.remove(grupo);
 	}
 
-	public boolean adicionar(Mensagem mensagem) {
-		return this.enviadas.add(mensagem);
-
-	}
-
-	public boolean removerEnviada(Mensagem mensagem) {
-		return this.enviadas.remove(mensagem);
-	}
-
 	public String toString() {
 		String checkAdministrador = "Não é";
 
@@ -73,15 +59,6 @@ public class Individual extends Participante {
 				+ " administrador." + "\n grupos=" + grupos;
 	}
 
-	public Mensagem localizarEnviada(int id) {
-		for (Mensagem msg : this.enviadas) {
-			if (msg.getId() == id) {
-				return msg;
-			}
-		}
-		return null;
-	}
-
 	public Grupo localizarGrupo(String nome) {
 		for (Grupo g : this.grupos) {
 			if (g.getNome().equals(nome)) {
@@ -89,6 +66,15 @@ public class Individual extends Participante {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public boolean equals(Participante p) {
+		if (!(p instanceof Individual))
+			return false;
+
+		return (this.getNome().equals(p.getNome()) &&
+				this.getSenha().equals(((Individual) p).getSenha()));
 	}
 
 }
