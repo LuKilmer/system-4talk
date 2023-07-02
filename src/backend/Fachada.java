@@ -174,9 +174,12 @@ public class Fachada {
 		if (destinatario == null)
 			throw new Exception("criar mensagem - destinatario nao existe:" + nomeemitente);
 
-		/* Foi uma ideia doida minha */
-		int id = repositorio.getMensagems().get(
-				repositorio.getMensagems().size() - 1).getId() + 1;
+		ArrayList<Mensagem> todasMensagens = repositorio.getMensagems();
+		int ultimoId = (todasMensagens.size() == 0) ? 167 : todasMensagens.get(todasMensagens.size() - 1).getId();
+		int id = (todasMensagens.size() == 0) ? ultimoId
+				: (int) Math.pow(
+						((ultimoId % 2 == 0) ? (int) ultimoId / 2 : ultimoId * 2) + 167,
+						0.5);
 
 		Mensagem enviada = new Mensagem(id, emitente, destinatario, texto);
 

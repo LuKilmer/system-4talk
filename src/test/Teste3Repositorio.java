@@ -5,16 +5,23 @@ import backend.*;
 public class Teste3Repositorio {
 	public static void main(String[] args) {
 		try {
+			try {
+				Fachada.criarGrupo("GolpeDoBolsonaro");
+				Fachada.criarIndividuo("Xuxa", "2222");
+				Fachada.criarIndividuo("Vitor", "16421");
+				Fachada.criarAdministrador("Tonho", "Bolsonaro2022");
 
-			Fachada.criarGrupo("GolpeDoBolsonaro");
+			} catch (Exception e) {
 
-			Fachada.criarIndividuo("Xuxa", "2222");
-			Fachada.criarIndividuo("Vitor", "16421");
-			Fachada.criarAdministrador("Tonho", "Bolsonaro2022");
+			}
+			try {
+				Fachada.inserirGrupo("Vitor", "GolpeDoBolsonaro");
+				Fachada.inserirGrupo("Xuxa", "GolpeDoBolsonaro");
+				Fachada.inserirGrupo("Tonho", "GolpeDoBolsonaro");
 
-			Fachada.inserirGrupo("Vitor", "GolpeDoBolsonaro");
-			Fachada.inserirGrupo("Xuxa", "GolpeDoBolsonaro");
-			Fachada.inserirGrupo("Tonho", "GolpeDoBolsonaro");
+			} catch (Exception e) {
+
+			}
 
 			Fachada.criarMensagem("Vitor", "GolpeDoBolsonaro", "Vamos nos reunir amanhã!");
 			Fachada.criarMensagem("Xuxa", "GolpeDoBolsonaro", "Vamos sim Baixinho!");
@@ -26,7 +33,7 @@ public class Teste3Repositorio {
 			Fachada.criarMensagem("Tonho", "GolpeDoBolsonaro", "Que isso Compatriota! Criança não Pode.");
 			Fachada.criarMensagem("Xuxa", "GolpeDoBolsonaro", "Baixinhos e baixinhas podem se machucar! Vivaaaaa.");
 			Fachada.criarMensagem("Vitor", "GolpeDoBolsonaro", "Eita! Vou deixar para lá então.");
-			Fachada.apagarMensagem("Vitor", 7);
+			// Fachada.apagarMensagem("Vitor", 7);
 			Fachada.salvarDados();
 		} catch (Exception e) {
 			e.printStackTrace();
