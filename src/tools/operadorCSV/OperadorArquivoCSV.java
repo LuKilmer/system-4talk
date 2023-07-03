@@ -49,8 +49,8 @@ public abstract class OperadorArquivoCSV {
 		}
 
 		if (lerArquivo(url).size() == 0) { // checa se o arquvio foi criado, e está vazio
-			escrevercolunaTitulo.write(String.join(";", colunaTitulo)); // Se estiver vazio, ele irá inserir o título
-																		// das linhas.
+			escrevercolunaTitulo.write(String.join(";", colunaTitulo));
+			// Se estiver vazio, ele irá inserir o título das linhas.
 		}
 		;
 		try {

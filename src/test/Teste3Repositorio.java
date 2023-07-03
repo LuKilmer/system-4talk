@@ -34,6 +34,7 @@ public class Teste3Repositorio {
 			Fachada.criarMensagem("Xuxa", "GolpeDoBolsonaro", "Baixinhos e baixinhas podem se machucar! Vivaaaaa.");
 			Fachada.criarMensagem("Vitor", "GolpeDoBolsonaro", "Eita! Vou deixar para lá então.");
 			// Fachada.apagarMensagem("Vitor", 7);
+			System.out.println("DEU CERTO!!!!!!!!!!!!!!!!!!");
 			Fachada.salvarDados();
 		} catch (Exception e) {
 			e.printStackTrace();

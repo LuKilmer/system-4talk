@@ -9,6 +9,13 @@ public class Mensagem {
 	private Participante destinatario;
 	private LocalDateTime dataHora;
 
+	public Mensagem(int id, Participante emitente, Participante desitnatario, String texto, LocalDateTime datahora) {
+		this.id = id;
+		this.texto = texto;
+		this.emitente = emitente;
+		this.destinatario = desitnatario;
+	}
+
 	public Mensagem(int id, Participante emitente, Participante desitnatario, String texto) {
 		this.id = id;
 		this.texto = texto;

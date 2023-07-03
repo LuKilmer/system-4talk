@@ -6,16 +6,24 @@ import model.Grupo;
 import model.Individual;
 import model.Mensagem;
 import model.Participante;
-import repository.Repositorio;
+import repository.RepositorioAntigo;
 
 public class Fachada {
 
-	private static Repositorio repositorio = new Repositorio();
+	private static RepositorioAntigo repositorio = new RepositorioAntigo();
 
+	/* Salva os objetos no repositório. */
 	public static void salvarDados() {
 		repositorio.salvarObjetos();
 	};
 
+	/**
+	 * Valida um indivíduo com base em seu nome e senha.
+	 *
+	 * @param nome  O nome do indivíduo
+	 * @param senha A senha do indivíduo
+	 * @return true se o indivíduo é válido, false caso contrário
+	 */
 	public static Individual validarIndividuo(String nome, String senha) {
 		Individual usuario = localizarIndividual(nome);
 		if (usuario == null) {
@@ -30,23 +38,52 @@ public class Fachada {
 
 	}
 
+	/**
+	 * Localiza um indivíduo no repositório com base em seu nome.
+	 *
+	 * @param nome O nome do indivíduo a ser localizado
+	 * @return O objeto Individual correspondente, ou null se não encontrado
+	 */
 	public static Individual localizarIndividual(String nome) {
 
 		return repositorio.localizarIndividual(nome);
 	}
 
+	/**
+	 * Localiza um grupo no repositório com base em seu nome.
+	 *
+	 * @param nome O nome do grupo a ser localizado
+	 * @return O objeto Grupo correspondente, ou null se não encontrado
+	 */
 	public static Grupo localizarGrupo(String name) {
 		return repositorio.localizarGrupo(name);
 	}
 
+	/**
+	 * Retorna uma lista de todos os indivíduos no repositório.
+	 *
+	 * @return Uma lista contendo todos os objetos Individual no repositório
+	 */
 	public static ArrayList<Individual> listarIndividuos() {
 		return repositorio.getIndividuos();
 	}
 
+	/**
+	 * Retorna uma lista de todos os grupos no repositório.
+	 *
+	 * @return Uma lista contendo todos os objetos Grupo no repositório
+	 */
 	public static ArrayList<Grupo> listarGrupos() {
 		return repositorio.getGrupos();
 	}
 
+	/**
+	 * Retorna uma lista de todas as mensagens enviadas por um determinado
+	 * indivíduo.
+	 *
+	 * @param nome O nome do indivíduo
+	 * @return Uma lista contendo todas as mensagens enviadas pelo indivíduo
+	 */
 	public static ArrayList<Mensagem> listarMensagensEnviadas(String nome) throws Exception {
 		Individual ind = repositorio.localizarIndividual(nome);
 		if (ind == null)
@@ -55,6 +92,13 @@ public class Fachada {
 		return ind.getEnviadas();
 	}
 
+	/**
+	 * Retorna uma lista de todas as mensagens recebidas por um determinado
+	 * indivíduo.
+	 *
+	 * @param nome O nome do indivíduo
+	 * @return Uma lista contendo todas as mensagens recebidas pelo indivíduo
+	 */
 	public static ArrayList<Mensagem> listarMensagensRecebidas(String nome) throws Exception {
 		Individual ind = repositorio.localizarIndividual(nome);
 		if (ind == null)
@@ -64,6 +108,17 @@ public class Fachada {
 
 	}
 
+	/**
+	 * 
+	 * Cria um indivíduo no repositório.
+	 * 
+	 * @param nome  O nome do indivíduo.
+	 * 
+	 * @param senha A senha do indivíduo.
+	 * 
+	 * @throws Exception Se o nome ou a senha estiverem vazios, ou se o nome já
+	 *                   existir no repositório.
+	 */
 	public static void criarIndividuo(String nome, String senha) throws Exception {
 		if (nome.isEmpty())
 			throw new Exception("criar individual - nome vazio:");
@@ -105,6 +160,14 @@ public class Fachada {
 
 	}
 
+	/**
+	 * 
+	 * Cria um grupo no repositório.
+	 * 
+	 * @param nome O nome do grupo.
+	 * @throws Exception Se já existir um grupo com o mesmo nome.
+	 */
+
 	public static void criarGrupo(String nome) throws Exception {
 		// localizar nome no repositorio
 		// criar o grupo
@@ -115,8 +178,16 @@ public class Fachada {
 		repositorio.adicionar(novoGrupo);
 		repositorio.salvarObjetos();
 	}
-	// repositorio.adicionar(new Grupo(nome));
 
+	/**
+	 * 
+	 * Insere um indivíduo em um grupo.
+	 * 
+	 * @param nomeindividuo O nome do indivíduo.
+	 * @param nomegrupo     O nome do grupo.
+	 * @throws Exception Se o usuário ou o grupo não forem encontrados, ou se o
+	 *                   indivíduo já estiver no grupo.
+	 */
 	public static void inserirGrupo(String nomeindividuo, String nomegrupo) throws Exception {
 		// localizar nomeindividuo no repositorio
 		// localizar nomegrupo no repositorio
@@ -137,6 +208,13 @@ public class Fachada {
 		repositorio.salvarObjetos();
 	}
 
+	/**
+	 * Remove o indivíduo de um grupo
+	 * 
+	 * @param nomeindividuo
+	 * @param nomegrupo
+	 * @throws Exception - se não achar o indívidio ou o grupo
+	 */
 	public static void removerGrupo(String nomeindividuo, String nomegrupo) throws Exception {
 		// localizar nomeindividuo no repositorio
 		// localizar nomegrupo no repositorio
@@ -161,6 +239,14 @@ public class Fachada {
 		/* repositorio.salvarObjetos(); */
 	}
 
+	/**
+	 * Cria uma nova mensagem e a adiciona ao repositório.
+	 *
+	 * @param nomeemitente     O nome do remetente.
+	 * @param nomedestinatario O nome do destinatário.
+	 * @param texto            O texto da mensagem.
+	 * @throws Exception Se ocorrer um erro ao criar a mensagem.
+	 */
 	public static void criarMensagem(String nomeemitente, String nomedestinatario, String texto) throws Exception {
 		repositorio.carregarObjetos();
 		if (texto.isEmpty())
@@ -175,13 +261,10 @@ public class Fachada {
 			throw new Exception("criar mensagem - destinatario nao existe:" + nomeemitente);
 
 		ArrayList<Mensagem> todasMensagens = repositorio.getMensagems();
-		int ultimoId = (todasMensagens.size() == 0) ? 167 : todasMensagens.get(todasMensagens.size() - 1).getId();
-		int id = (todasMensagens.size() == 0) ? ultimoId
-				: (int) Math.pow(
-						((ultimoId % 2 == 0) ? (int) ultimoId / 2 : ultimoId * 2) + 167,
-						0.5);
+		int id = (todasMensagens.size() == 0) ? 1 : todasMensagens.get(todasMensagens.size() - 1).getId() + 1;
 
 		Mensagem enviada = new Mensagem(id, emitente, destinatario, texto);
+		emitente.adicionarEnviada(enviada);
 
 		/*
 		 * O Emitente deve adicionar a mensagem enviada em sua caixa de enviados.
@@ -193,39 +276,26 @@ public class Fachada {
 			if (emitente.localizarGrupo(destinatario.getNome()) == null)
 				throw new Exception("criar mensagem - grupo nao permitido:" + nomedestinatario);
 
-			/*
-			 * O Emitente deve adicionar a mensagem enviada em sua caixa de enviados.
-			 * O Grupo deve adicionar a mensagem enviada em sua caixa de recebidas.
-			 * Em seguida, cada índividuo no grupo receberá a mensagem que foi enviada.
-			 */
-
-			/*
-			 * Se o destinatário for um grupo, envia cópias da mensagem (com mesmo id) do
-			 * grupo para os membros desse grupo (exceto para emitente que criou a mensagem
-			 * original), concatenando ao texto o nome do emitente, na forma “nome/texto”.
-			 * Adicionar as copias no repositório
-			 */
-			enviada.setTexto(emitente.getNome() + " / " + texto);
-
-			/* O grupo é o novo emitente da mensagem */
-			enviada.setEmitente(destinatario);
-			emitente.adicionarEnviada(enviada);
+			texto = emitente.getNome() + " / " + texto;
 
 			for (Participante p : ((Grupo) destinatario).getIndividuos()) {
 
 				if (!p.equals(emitente)) {
-					enviada.setDestinario(p);
-					p.adicionarRecebida(enviada);
-					repositorio.adicionar(enviada);
+
+					/* O grupo é o novo emitente da mensagem */
+					Mensagem copia = new Mensagem(id, destinatario, p, texto);
+
+					p.adicionarRecebida(copia);
+					emitente.adicionarEnviada(copia);
+
+					repositorio.adicionar(copia);
 				}
 			}
-		} else {
-			emitente.adicionarEnviada(enviada);
-			repositorio.adicionar(enviada);
 		}
 
 		destinatario.adicionarRecebida(enviada);
 
+		repositorio.adicionar(enviada);
 		repositorio.salvarObjetos();
 
 		// cont.
@@ -240,6 +310,14 @@ public class Fachada {
 
 	}
 
+	/**
+	 * Recupera uma conversa entre dois participantes.
+	 *
+	 * @param nomeindividuo    O nome do remetente.
+	 * @param nomedestinatario O nome do destinatário.
+	 * @return A conversa entre o remetente e o destinatário.
+	 * @throws Exception Se ocorrer um erro ao recuperar a conversa.
+	 */
 	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) throws Exception {
 		repositorio.carregarObjetos();
 		// localizar emitente no repositorio
@@ -338,6 +416,13 @@ public class Fachada {
 		 */
 	}
 
+	/**
+	 * Exclui uma mensagem do repositório.
+	 *
+	 * @param nomeindividuo O nome do remetente.
+	 * @param id            O ID da mensagem a ser excluída.
+	 * @throws Exception Se ocorrer um erro ao excluir a mensagem.
+	 */
 	public static void apagarMensagem(String nomeindividuo, int id) throws Exception {
 		repositorio.carregarObjetos();
 
@@ -396,6 +481,14 @@ public class Fachada {
 		 */
 	}
 
+	/**
+	 * Procura por mensagens que contenham um termo específico.
+	 *
+	 * @param nomeadministrador O nome do administrador.
+	 * @param termo             O termo de busca.
+	 * @return A lista de mensagens que contêm o termo de busca.
+	 * @throws Exception Se ocorrer um erro ao procurar por mensagens.
+	 */
 	public static ArrayList<Mensagem> espionarMensagens(String nomeadministrador, String termo) throws Exception {
 
 		Individual adm = repositorio.localizarIndividual(nomeadministrador);
@@ -456,6 +549,11 @@ public class Fachada {
 		return ausentesNome;
 	}
 
+	/**
+	 * Retorna todas as mensagens no repositório.
+	 *
+	 * @return A lista de todas as mensagens no repositório.
+	 */
 	public static ArrayList<Mensagem> listarMensagens() {
 		return repositorio.getMensagems();
 	}
