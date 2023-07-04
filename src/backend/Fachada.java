@@ -6,11 +6,11 @@ import model.Grupo;
 import model.Individual;
 import model.Mensagem;
 import model.Participante;
-import repository.RepositorioAntigo;
+import repository.Repositorio;
 
 public class Fachada {
 
-	private static RepositorioAntigo repositorio = new RepositorioAntigo();
+	private static Repositorio repositorio = new Repositorio();
 
 	/* Salva os objetos no repositório. */
 	public static void salvarDados() {
@@ -287,7 +287,6 @@ public class Fachada {
 
 					p.adicionarRecebida(copia);
 					emitente.adicionarEnviada(copia);
-
 					repositorio.adicionar(copia);
 				}
 			}

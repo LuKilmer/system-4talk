@@ -52,7 +52,7 @@ public class Repositorio {
 
         try {
             String nome, senha, administrador;
-            File f = new File(new File(".\\individuos.csv").getCanonicalPath());
+            File f = new File(new File("./data/individuos.csv").getCanonicalPath());
             Scanner arquivo1 = new Scanner(f); // pasta do projeto
             while (arquivo1.hasNextLine()) {
                 linha = arquivo1.nextLine().trim();
@@ -73,7 +73,7 @@ public class Repositorio {
             String nome;
             Grupo grupo;
             Individual individuo;
-            File f = new File(new File(".\\grupos.csv").getCanonicalPath());
+            File f = new File(new File("./data/grupos.csv").getCanonicalPath());
             Scanner arquivo2 = new Scanner(f); // pasta do projeto
             while (arquivo2.hasNextLine()) {
                 linha = arquivo2.nextLine().trim();
@@ -100,17 +100,18 @@ public class Repositorio {
             LocalDateTime datahora;
             Mensagem m;
             Participante emitente, destinatario;
-            File f = new File(new File(".\\mensagens.csv").getCanonicalPath());
+            File f = new File(new File("./data/mensagens.csv").getCanonicalPath());
             Scanner arquivo3 = new Scanner(f); // pasta do projeto
             while (arquivo3.hasNextLine()) {
                 linha = arquivo3.nextLine().trim();
                 partes = linha.split(";");
-                // System.out.println(Arrays.toString(partes));
+                System.out.println(linha);
                 id = Integer.parseInt(partes[0]);
-                texto = partes[1];
-                nomeemitente = partes[2];
-                nomedestinatario = partes[3];
-                datahora = LocalDateTime.parse(partes[4], DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
+                nomeemitente = partes[1];
+                nomedestinatario = partes[2];
+                texto = partes[3];
+                datahora = LocalDateTime.parse(partes[4],
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS"));
                 emitente = this.localizarParticipante(nomeemitente);
                 destinatario = this.localizarParticipante(nomedestinatario);
                 m = new Mensagem(id, emitente, destinatario, texto, datahora);
@@ -127,13 +128,13 @@ public class Repositorio {
     public void salvarObjetos() {
         // gravar nos arquivos csv os objetos que estão no repositório
         try {
-            File f = new File(new File(".\\mensagens.csv").getCanonicalPath());
-            FileWriter arquivo1 = new FileWriter(f);
+            File f = new File(new File("./data/mensagens.csv").getCanonicalPath());
+            FileWriter arquivo1 = new FileWriter(f, false);
             for (Mensagem m : mensagens) {
                 arquivo1.write(m.getId() + ";" +
-                        m.getTexto() + ";" +
                         m.getEmitente().getNome() + ";" +
                         m.getDestinatario().getNome() + ";" +
+                        m.getTexto() + ";" +
                         m.getData() + "\n");
             }
             arquivo1.close();
@@ -142,7 +143,7 @@ public class Repositorio {
         }
 
         try {
-            File f = new File(new File(".\\individuos.csv").getCanonicalPath());
+            File f = new File(new File("./data/individuos.csv").getCanonicalPath());
             FileWriter arquivo2 = new FileWriter(f);
             for (Individual ind : this.getIndividuos()) {
                 arquivo2.write(ind.getNome() + ";" + ind.getSenha() + ";" + ind.getAdministrador() + "\n");
@@ -153,7 +154,7 @@ public class Repositorio {
         }
 
         try {
-            File f = new File(new File(".\\grupos.csv").getCanonicalPath());
+            File f = new File(new File("./data/grupos.csv").getCanonicalPath());
             FileWriter arquivo3 = new FileWriter(f);
             for (Grupo g : this.getGrupos()) {
                 String texto = "";
@@ -276,7 +277,14 @@ public class Repositorio {
     }
 
     public void adicionar(Mensagem msg) {
-        this.mensagens.add(msg);
+        if (msg.getId() != mensagens.get(mensagens.size() - 1).getId())
+            this.mensagens.add(msg);
 
     }
+
+    public void remover(Participante p) {
+        this.participantes.remove(p.getNome());
+        this.salvarObjetos();
+    }
+
 }

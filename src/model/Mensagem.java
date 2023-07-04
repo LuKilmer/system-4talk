@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Mensagem {
 	private int id;
@@ -14,9 +15,11 @@ public class Mensagem {
 		this.texto = texto;
 		this.emitente = emitente;
 		this.destinatario = desitnatario;
+		this.dataHora = datahora;
 	}
 
 	public Mensagem(int id, Participante emitente, Participante desitnatario, String texto) {
+
 		this.id = id;
 		this.texto = texto;
 		this.emitente = emitente;

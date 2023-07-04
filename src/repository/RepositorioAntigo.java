@@ -241,7 +241,7 @@ public class RepositorioAntigo {
 		// gravar nos arquivos csv os objetos que estão no repositório
 		try {
 			File f = new File(new File("./data/mensagens.csv").getCanonicalPath());
-			FileWriter arquivo1 = new FileWriter(f);
+			FileWriter arquivo1 = new FileWriter(f, false);
 			for (Mensagem m : mensagens) {
 				arquivo1.write(m.getId() + ";" +
 						m.getEmitente().getNome() + ";" +
