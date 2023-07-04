@@ -27,7 +27,7 @@ public class Repositorio {
     private ArrayList<Mensagem> mensagens = new ArrayList<>();
     
     public Repositorio(){
-        
+        carregarObjetos();
     }
     public void carregarObjetos() {
         // carregar para o repositorio os objetos dos arquivos csv
@@ -266,26 +266,23 @@ public class Repositorio {
 
     public void remover(Mensagem msg) {
         this.mensagens.remove(msg.getId());
-        salvarObjetos();
+       
     }
 
     public void adicionar(Individual ind) {
         participantes.put(ind.getNome(), ind);
-        salvarObjetos();
+      
 
     }
 
     public void adicionar(Grupo ind) {
         participantes.put(ind.getNome(), ind);
-        salvarObjetos();
+       
     }
 
     public void adicionar(Mensagem msg) {
-        if(mensagens.size()== 0){
-            this.mensagens.add(msg);
-        }
-        if (msg.getId() != mensagens.get(mensagens.size() - 1).getId()){
-            this.mensagens.add(msg);}else{this.mensagens.add(msg);}
+        this.mensagens.add(msg);
+        
         
         
 
