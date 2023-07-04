@@ -9,12 +9,18 @@ import model.Participante;
 import repository.Repositorio;
 
 public class Fachada {
-
+	public Fachada(){
+		System.out.println("ok");
+	}
 	private static Repositorio repositorio = new Repositorio();
 
 	/* Salva os objetos no repositório. */
 	public static void salvarDados() {
 		repositorio.salvarObjetos();
+	};
+	/* adivinha o que este metodo faz */
+	public static void carregarDados() {
+		repositorio.carregarObjetos();
 	};
 
 	/**
@@ -205,6 +211,7 @@ public class Fachada {
 		if (!grupo.adicionar(participante) && !participante.adicionar(grupo))
 			throw new Exception(
 					"O Índivíduo " + participante.getNome() + " já está presente no grupo: " + grupo.getNome());
+		participante.adicionar(grupo);
 		repositorio.salvarObjetos();
 	}
 
@@ -248,7 +255,7 @@ public class Fachada {
 	 * @throws Exception Se ocorrer um erro ao criar a mensagem.
 	 */
 	public static void criarMensagem(String nomeemitente, String nomedestinatario, String texto) throws Exception {
-		repositorio.carregarObjetos();
+		
 		if (texto.isEmpty())
 			throw new Exception("criar mensagem - texto vazio:");
 
@@ -275,19 +282,24 @@ public class Fachada {
 
 			if (emitente.localizarGrupo(destinatario.getNome()) == null)
 				throw new Exception("criar mensagem - grupo nao permitido:" + nomedestinatario);
-
-			texto = emitente.getNome() + " / " + texto;
+			
+			
 
 			for (Participante p : ((Grupo) destinatario).getIndividuos()) {
-
+		
 				if (!p.equals(emitente)) {
-
+					String newtexto = emitente.getNome() + " / " + texto;
 					/* O grupo é o novo emitente da mensagem */
-					Mensagem copia = new Mensagem(id, destinatario, p, texto);
+					Mensagem copia = new Mensagem(id, destinatario, p, newtexto);
 
 					p.adicionarRecebida(copia);
 					emitente.adicionarEnviada(copia);
 					repositorio.adicionar(copia);
+				}else{
+					Mensagem original = new Mensagem(id, destinatario, p, texto);
+					p.adicionarRecebida(original);
+					emitente.adicionarEnviada(original);
+					repositorio.adicionar(original);
 				}
 			}
 		}
@@ -318,7 +330,7 @@ public class Fachada {
 	 * @throws Exception Se ocorrer um erro ao recuperar a conversa.
 	 */
 	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) throws Exception {
-		repositorio.carregarObjetos();
+		
 		// localizar emitente no repositorio
 		// localizar destinatario no repositorio
 		// obter do emitente a lista enviadas
@@ -423,7 +435,7 @@ public class Fachada {
 	 * @throws Exception Se ocorrer um erro ao excluir a mensagem.
 	 */
 	public static void apagarMensagem(String nomeindividuo, int id) throws Exception {
-		repositorio.carregarObjetos();
+	
 
 		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
 		if (emitente == null)

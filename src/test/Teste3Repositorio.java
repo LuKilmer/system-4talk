@@ -9,7 +9,6 @@ public class Teste3Repositorio {
 				Fachada.criarGrupo("GolpeDoBolsonaro");
 				Fachada.criarIndividuo("Xuxa", "2222");
 				Fachada.criarIndividuo("Vitor", "16421");
-				Fachada.criarIndividuo("Cabo Loso", "Varadura");
 				Fachada.criarAdministrador("Tonho", "Bolsonaro2022");
 
 			} catch (Exception e) {

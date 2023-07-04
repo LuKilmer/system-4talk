@@ -95,9 +95,11 @@ public class TelaLogin {
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
+					
 					String nome = textField.getText();
 					String senha = new String(passwordField.getPassword());
 					Individual individuo = Fachada.validarIndividuo(nome, senha);
+					
 					if(individuo != null) {
 						TelaPrincipal.logado = individuo;
 						frame.dispose();

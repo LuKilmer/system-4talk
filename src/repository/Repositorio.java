@@ -25,7 +25,10 @@ public class Repositorio {
 
     private TreeMap<String, Participante> participantes = new TreeMap<>();
     private ArrayList<Mensagem> mensagens = new ArrayList<>();
-
+    
+    public Repositorio(){
+        
+    }
     public void carregarObjetos() {
         // carregar para o repositorio os objetos dos arquivos csv
         try {
@@ -105,7 +108,6 @@ public class Repositorio {
             while (arquivo3.hasNextLine()) {
                 linha = arquivo3.nextLine().trim();
                 partes = linha.split(";");
-                System.out.println(linha);
                 id = Integer.parseInt(partes[0]);
                 nomeemitente = partes[1];
                 nomedestinatario = partes[2];
@@ -169,10 +171,12 @@ public class Repositorio {
     }
 
     public Individual localizarIndividual(String nome) {
+    
         Individual chosen = null;
 
         for (Participante part : this.participantes.values()) {
             if (part instanceof Individual) {
+                
                 if (part.getNome().equals(nome)) {
                     chosen = (Individual) part;
                     break;
@@ -189,6 +193,7 @@ public class Repositorio {
          * }
          * }
          */
+        
         return chosen;
     }
 
@@ -273,12 +278,16 @@ public class Repositorio {
     public void adicionar(Grupo ind) {
         participantes.put(ind.getNome(), ind);
         salvarObjetos();
-
     }
 
     public void adicionar(Mensagem msg) {
-        if (msg.getId() != mensagens.get(mensagens.size() - 1).getId())
+        if(mensagens.size()== 0){
             this.mensagens.add(msg);
+        }
+        if (msg.getId() != mensagens.get(mensagens.size() - 1).getId()){
+            this.mensagens.add(msg);}else{this.mensagens.add(msg);}
+        
+        
 
     }
 
