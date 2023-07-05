@@ -23,8 +23,17 @@ public class Grupo extends Participante {
 			return false;
 	}
 
-	public boolean removerIndividuo(Individual individuo) {
-		return this.individuos.remove(individuo);
+	public void removerIndividuo(Individual individuo) {
+		this.individuos.remove(individuo);
+	}
+
+	public Individual localizarIndividual(String nome) {
+		for (Individual i : this.individuos) {
+			if (i.getNome().equals(nome)) {
+				return i;
+			}
+		}
+		return null;
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package backend;
 
 import java.util.ArrayList;
 
-
 import model.Grupo;
 import model.Individual;
 import model.Mensagem;
@@ -166,7 +165,7 @@ public class Fachada {
 
 		else
 			throw new Exception("Esse índividuo já é um administrador!");
-		
+
 		repositorio.salvarObjetos();
 
 	}
@@ -241,14 +240,15 @@ public class Fachada {
 		if (grupo == null)
 			throw new Exception("Grupo não encontrado");
 
-		if (!grupo.removerIndividuo(participante))
+		if (grupo.localizarIndividual(participante.getNome()) == null)
 			throw new Exception(" Participante não encontrado: " + nomeindividuo);
-		else
-			participante.remover(grupo);
+
+		grupo.removerIndividuo(participante);
+		participante.remover(grupo);
 
 		if (grupo.getIndividuos().size() == 0)
 			repositorio.remover(grupo);
-		/* repositorio.salvarObjetos(); */
+		repositorio.salvarObjetos();
 	}
 
 	/**
@@ -359,69 +359,73 @@ public class Fachada {
 		if (destinatario == null) {
 			throw new Exception("criar mensagem - destinatario nao existe:" + nomedestinatario);
 		}
-		
+
 		ArrayList<Mensagem> conversa = new ArrayList<>();
-		for(Mensagem m:repositorio.getMensagems()){
-			if(m.getEmitente().equals(emitente) && m.getDestinatario().equals(destinatario)){
+		for (Mensagem m : repositorio.getMensagems()) {
+			if (m.getEmitente().equals(emitente) && m.getDestinatario().equals(destinatario)) {
 				conversa.add(m);
-			}else if(m.getEmitente().equals(destinatario) && m.getDestinatario().equals(emitente)){
+			} else if (m.getEmitente().equals(destinatario) && m.getDestinatario().equals(emitente)) {
 				conversa.add(m);
 			}
 		}
 		ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
 		int sizeList = conversa.size();
 		for (int i = 0; i < sizeList; i++) {
-		Mensagem minMsg = conversa.get(0);
-		for (Mensagem msg : conversa) {
-		if (msg.getId() < minMsg.getId()) {
-		minMsg = msg;
-		}
-		}
-		conversa.remove(minMsg);
-		conversaOrganizada.add(minMsg);
-		}
-	return conversaOrganizada;
-		
-        
-			/*
-		ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
-		ArrayList<Mensagem> mensagensEnviadas = emitente.getEnviadas();
-		ArrayList<Mensagem> mensagensRecebidas = emitente.getRecebidas();
-		ArrayList<Mensagem> conversa = new ArrayList<>();
-		// ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
-	
-		int indexEnviada = 0;
-		int indexRecebida = 0;
-
-		while (conversa.size() < (mensagensEnviadas.size() + mensagensRecebidas.size())) {
-
-			// Checamos se o index não irá extrapolar o tamanho dos array
-			if (indexEnviada >= mensagensEnviadas.size()) {
-				conversa.addAll(mensagensRecebidas.subList(indexRecebida, mensagensRecebidas.size()));
-
-			} else if (indexRecebida >= mensagensRecebidas.size()) {
-				conversa.addAll(mensagensEnviadas.subList(indexEnviada, mensagensEnviadas.size()));
-
-			} else {
-				// Se não extrapolar, coletamos as mensagens que iremos comparar
-				Mensagem enviada = mensagensEnviadas.get(indexEnviada);
-				Mensagem recebida = mensagensRecebidas.get(indexRecebida);
-
-				// caso as duas coleções ainda possuam mensagens.
-				// Checa se a mensagem enviada é anterior a mensagem recebida naquela conversa
-				// pelo ID.
-
-				if (enviada.getId() < recebida.getId()) {
-					conversa.add(enviada);
-					indexEnviada += 1;
-				} else {
-					conversa.add(recebida);
-					indexRecebida += 1;
+			Mensagem minMsg = conversa.get(0);
+			for (Mensagem msg : conversa) {
+				if (msg.getId() < minMsg.getId()) {
+					minMsg = msg;
 				}
 			}
+			conversa.remove(minMsg);
+			conversaOrganizada.add(minMsg);
+		}
+		return conversaOrganizada;
 
-		}*/
-		
+		/*
+		 * ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
+		 * ArrayList<Mensagem> mensagensEnviadas = emitente.getEnviadas();
+		 * ArrayList<Mensagem> mensagensRecebidas = emitente.getRecebidas();
+		 * ArrayList<Mensagem> conversa = new ArrayList<>();
+		 * // ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
+		 * 
+		 * int indexEnviada = 0;
+		 * int indexRecebida = 0;
+		 * 
+		 * while (conversa.size() < (mensagensEnviadas.size() +
+		 * mensagensRecebidas.size())) {
+		 * 
+		 * // Checamos se o index não irá extrapolar o tamanho dos array
+		 * if (indexEnviada >= mensagensEnviadas.size()) {
+		 * conversa.addAll(mensagensRecebidas.subList(indexRecebida,
+		 * mensagensRecebidas.size()));
+		 * 
+		 * } else if (indexRecebida >= mensagensRecebidas.size()) {
+		 * conversa.addAll(mensagensEnviadas.subList(indexEnviada,
+		 * mensagensEnviadas.size()));
+		 * 
+		 * } else {
+		 * // Se não extrapolar, coletamos as mensagens que iremos comparar
+		 * Mensagem enviada = mensagensEnviadas.get(indexEnviada);
+		 * Mensagem recebida = mensagensRecebidas.get(indexRecebida);
+		 * 
+		 * // caso as duas coleções ainda possuam mensagens.
+		 * // Checa se a mensagem enviada é anterior a mensagem recebida naquela
+		 * conversa
+		 * // pelo ID.
+		 * 
+		 * if (enviada.getId() < recebida.getId()) {
+		 * conversa.add(enviada);
+		 * indexEnviada += 1;
+		 * } else {
+		 * conversa.add(recebida);
+		 * indexRecebida += 1;
+		 * }
+		 * }
+		 * 
+		 * }
+		 */
+
 		/*
 		 * if (mensagensEnviadas.size() > 0) {
 		 * for (Mensagem msg : mensagensEnviadas) {
@@ -567,6 +571,22 @@ public class Fachada {
 	 */
 	public static ArrayList<Mensagem> listarMensagens() {
 		return repositorio.getMensagems();
+	}
+
+	public static void removerParticipante(String nome) throws Exception {
+		Participante participante = repositorio.localizarIndividual(nome);
+		if (participante != null) {
+			repositorio.remover(participante);
+			participante = null;
+		} else {
+			participante = repositorio.localizarGrupo(nome);
+		}
+
+		if (participante != null) {
+			repositorio.remover(participante);
+		} else
+			throw new Exception("Usuário " + nome + " não encontrado");
+		repositorio.salvarObjetos();
 	}
 
 }

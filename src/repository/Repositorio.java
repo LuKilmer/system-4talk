@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -116,14 +117,14 @@ public class Repositorio {
                     id = Integer.parseInt(partes[0]);
                     nomeemitente = partes[1];
                     nomedestinatario = partes[2];
-                    texto = partes[3];
+                    texto = String.join(";", Arrays.copyOfRange(partes, 3, partes.length - 1));
                     DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                             .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
                             .optionalStart()
                             .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
                             .optionalEnd()
                             .toFormatter();
-                    datahora = LocalDateTime.parse(partes[4], formatter);
+                    datahora = LocalDateTime.parse(partes[partes.length - 1], formatter);
 
                     emitente = this.localizarParticipante(nomeemitente);
                     destinatario = this.localizarParticipante(nomedestinatario);
