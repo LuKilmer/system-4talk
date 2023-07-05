@@ -286,28 +286,31 @@ public class Fachada {
 			
 
 			for (Participante p : ((Grupo) destinatario).getIndividuos()) {
-		
+				
 				if (!p.equals(emitente)) {
 					String newtexto = emitente.getNome() + " / " + texto;
 					/* O grupo é o novo emitente da mensagem */
 					Mensagem copia = new Mensagem(id, destinatario, p, newtexto);
-
 					p.adicionarRecebida(copia);
 					emitente.adicionarEnviada(copia);
 					repositorio.adicionar(copia);
+					
 				}else{
 					Mensagem original = new Mensagem(id, destinatario, p, texto);
-					p.adicionarRecebida(original);
+					destinatario.adicionarRecebida(original);
 					emitente.adicionarEnviada(original);
 					repositorio.adicionar(original);
+					
 				}
 			}
+		}else{
+			destinatario.adicionarRecebida(enviada);
+			repositorio.adicionar(enviada);
+			
 		}
-
-		destinatario.adicionarRecebida(enviada);
-
-		repositorio.adicionar(enviada);
 		repositorio.salvarObjetos();
+
+		
 
 		// cont.
 		// gerar id no repositorio para a mensagem
