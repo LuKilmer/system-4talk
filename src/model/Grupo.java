@@ -37,11 +37,11 @@ public class Grupo extends Participante {
 	}
 
 	@Override
-	public void removerRecebida(Mensagem recebida) {
+	public void removerRecebida(int id) {
 		for (Participante i : this.individuos) {
-			i.removerRecebida(recebida);
+			i.removerRecebida(id);
 		}
-		this.getRecebidas().remove(recebida);
+		this.getRecebidas().remove(this.localizarRecebida(id));
 	}
 
 	public ArrayList<Mensagem> localizarClones(int id) {
