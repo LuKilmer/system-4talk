@@ -1,9 +1,7 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+
 
 import model.Grupo;
 import model.Individual;
@@ -382,7 +380,6 @@ public class Fachada {
 		conversa.remove(minMsg);
 		conversaOrganizada.add(minMsg);
 		}
-		System.out.println(conversaOrganizada);
 	return conversaOrganizada;
 		
         

@@ -206,7 +206,6 @@ public class TelaConversa {
 				return;
 			String destinatario = (String) comboBox.getSelectedItem();
 			ArrayList<Mensagem> lista = Fachada.obterConversa(TelaPrincipal.logado.getNome(), destinatario);
-			System.out.println(TelaPrincipal.logado.getNome()+","+ destinatario);
 			// objeto model contem todas as linhas e colunas da tabela
 			DefaultTableModel model = new DefaultTableModel();
 			// criar as colunas (0,1,2,3,4) da tabela
@@ -216,11 +215,9 @@ public class TelaConversa {
 			model.addColumn("Destinatario");
 			model.addColumn("Texto");
 			// criar as linhas da tabela
-			System.out.println(Fachada.obterConversa(TelaPrincipal.logado.getNome(), destinatario));
+			
 			label.setText("");
-			for(Mensagem m: lista){
-				System.out.println(m);
-			}
+		
 			for (Mensagem m : lista) {
 				model.addRow(new Object[]{
 						m.getId(), 

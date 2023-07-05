@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.Executable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -50,6 +51,10 @@ public class TelaParticipante {
 	private JLabel lblSenha;
 	private JButton button;
 	private JPanel panel;
+	private JButton buttonAdd;
+	private DefaultTableModel model;
+	private JButton buttonRmv;
+
 
 	private JRadioButton radioButton;
 	private JRadioButton radioButton_1;
@@ -163,6 +168,55 @@ public class TelaParticipante {
 		button.setBounds(309, 225, 74, 23);
 		frame.getContentPane().add(button);
 
+		buttonAdd = new JButton("Adicionar");
+		buttonAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String name = (String) model.getValueAt(table.getSelectedRow(),0);
+					if(!name.equals("-1")){
+						String grupo = textField.getText();
+						grupo = grupo.trim();
+						if(grupo.equals("")){
+							throw new Exception("inseira o nome do grupo");
+						}
+						Fachada.inserirGrupo(name, grupo);
+
+						
+					}
+				} catch (Exception ex) {
+					label.setText(ex.getMessage());
+				}
+
+			}
+		});
+		buttonAdd.setBounds(400, 225, 110, 23);
+		frame.getContentPane().add(buttonAdd);
+
+		buttonRmv = new JButton("Remover");
+		buttonRmv.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String name = (String) model.getValueAt(table.getSelectedRow(),0);
+					if(!name.equals("-1")){
+						String grupo = textField.getText();
+						grupo = grupo.trim();
+						if(grupo.equals("")){
+							throw new Exception("inseira o nome do grupo");
+						}
+						Fachada.removerGrupo(name, grupo);
+
+			
+					}
+				} catch (Exception ex) {
+					label.setText(ex.getMessage());
+				}
+
+			}
+		});
+		buttonRmv.setBounds(350, 255, 110, 23);
+		frame.getContentPane().add(buttonRmv);
+
+
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(
 				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Tipo",
@@ -203,7 +257,7 @@ public class TelaParticipante {
 			List<Individual> lista1 = Fachada.listarIndividuos();
 			List<Grupo> lista2 = Fachada.listarGrupos();
 
-			DefaultTableModel model = new DefaultTableModel();
+			model = new DefaultTableModel();
 			// criar as colunas do table
 			model.addColumn("Nome");
 			model.addColumn("Tipo");
