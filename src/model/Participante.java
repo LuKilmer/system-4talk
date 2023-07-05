@@ -28,8 +28,10 @@ public class Participante {
 		this.recebidas.add(this.recebidas.size(), m);
 	}
 
-	public void removerRecebida(Mensagem m) {
-		this.recebidas.remove(m);
+	public Mensagem removerRecebida(int id) {
+		Mensagem mensagem = this.localizarRecebida(id);
+		this.recebidas.remove(mensagem);
+		return mensagem;
 	}
 
 	public Mensagem localizarRecebida(int id) {
@@ -50,8 +52,10 @@ public class Participante {
 
 	}
 
-	public boolean removerEnviada(Mensagem mensagem) {
-		return this.enviadas.remove(mensagem);
+	public Mensagem removerEnviada(int id) {
+		Mensagem mensagem = this.localizarEnviada(id);
+		this.enviadas.remove(mensagem);
+		return mensagem;
 	}
 
 	public Mensagem localizarEnviada(int id) {
