@@ -37,7 +37,7 @@ public class Grupo extends Participante {
 	}
 
 	@Override
-	public boolean removerEnviada(int id) {
+	public Mensagem removerEnviada(int id) {
 		ArrayList<Mensagem> enviadas = this.getEnviadas();
 		try {
 			for (Mensagem m : enviadas) {
@@ -48,21 +48,24 @@ public class Grupo extends Participante {
 				else if (m.getId() > id)
 					break;
 			}
-			return true;
+			return null;
 
 		} catch (Exception E) {
-			return false;
+			return null;
 		}
 
 	}
 
-	@Override
-	public void removerRecebida(int id) {
-		for (Participante i : this.individuos) {
-			i.removerRecebida(id);
-		}
-		this.getRecebidas().remove(this.localizarRecebida(id));
-	}
+	/*
+	 * @Override
+	 * public void removerRecebida(int id) {
+	 * for (Participante i : this.individuos) {
+	 * i.removerRecebida(id);
+	 * }
+	 * this.getRecebidas().remove(this.localizarRecebida(id));
+	 * 
+	 * }
+	 */
 
 	public ArrayList<Mensagem> localizarClones(int id) {
 
