@@ -37,6 +37,26 @@ public class Grupo extends Participante {
 	}
 
 	@Override
+	public boolean removerEnviada(int id) {
+		ArrayList<Mensagem> enviadas = this.getEnviadas();
+		try {
+			for (Mensagem m : enviadas) {
+
+				if (m.getId() == id)
+					enviadas.remove(id);
+
+				else if (m.getId() > id)
+					break;
+			}
+			return true;
+
+		} catch (Exception E) {
+			return false;
+		}
+
+	}
+
+	@Override
 	public void removerRecebida(int id) {
 		for (Participante i : this.individuos) {
 			i.removerRecebida(id);
