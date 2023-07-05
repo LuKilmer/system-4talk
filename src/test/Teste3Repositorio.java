@@ -36,7 +36,6 @@ public class Teste3Repositorio {
 			/*
 			 * Fachada.apagarMensagem("Vitor", 7);
 			 */ System.out.println("DEU CERTO!!!!!!!!!!!!!!!!!!");
-			Fachada.salvarDados();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -36,8 +36,6 @@ public class TelaEspionagem {
 	private JScrollPane scrollPane;
 	private JButton button;
 	private JLabel label;
-	private ButtonGroup grupobotoes;
-
 	private JTextField textField_2;
 	private JLabel label_1;
 	private JButton button_1;
@@ -88,7 +86,7 @@ public class TelaEspionagem {
 		frame.getContentPane().add(scrollPane);
 
 		table = new JTable();
-		table.setDefaultEditor(Object.class, null);  //desabilita edicao de celulas
+		table.setDefaultEditor(Object.class, null); // desabilita edicao de celulas
 		table.setGridColor(Color.BLACK);
 		table.setRequestFocusEnabled(false);
 		table.setFocusable(false);
@@ -125,7 +123,7 @@ public class TelaEspionagem {
 		button.setBounds(518, 19, 161, 23);
 		frame.getContentPane().add(button);
 
-		grupobotoes = new ButtonGroup();
+		new ButtonGroup();
 
 		textField_2 = new JTextField();
 		textField_2.setBounds(96, 22, 161, 20);
@@ -163,14 +161,14 @@ public class TelaEspionagem {
 			// criar as linhas da tabela
 			label.setText("");
 			for (Mensagem m : lista) {
-				model.addRow(new Object[]{
-						m.getId(), 
+				model.addRow(new Object[] {
+						m.getId(),
 						m.getData(),
-						m.getEmitente().getNome(), 
+						m.getEmitente().getNome(),
 						m.getDestinatario().getNome(),
-						m.getTexto() 
-						});			
-				}
+						m.getTexto()
+				});
+			}
 			table.setModel(model);
 
 			// redimensionar a coluna 3

@@ -9,21 +9,8 @@ import model.Participante;
 import repository.Repositorio;
 
 public class Fachada {
-	public Fachada() {
-		System.out.println("ok");
-	}
 
 	private static Repositorio repositorio = new Repositorio();
-
-	/* Salva os objetos no repositório. */
-	public static void salvarDados() {
-		repositorio.salvarObjetos();
-	};
-
-	/* adivinha o que este metodo faz */
-	public static void carregarDados() {
-		repositorio.carregarObjetos();
-	};
 
 	/**
 	 * Valida um indivíduo com base em seu nome e senha.
@@ -34,15 +21,10 @@ public class Fachada {
 	 */
 	public static Individual validarIndividuo(String nome, String senha) {
 		Individual usuario = localizarIndividual(nome);
-		if (usuario == null) {
-			return null;
-		} else {
-			if (usuario.equals(usuario)) {
-				return usuario;
-			} else {
-				return null;
-			}
-		}
+		if (usuario != null && usuario.getSenha().equals(senha))
+			return usuario;
+
+		return null;
 
 	}
 
@@ -493,7 +475,7 @@ public class Fachada {
 			destinatario.removerEnviada(id);
 		}
 
-		Fachada.salvarDados();
+		repositorio.salvarObjetos();
 	}
 
 	/**

@@ -226,10 +226,6 @@ public class Repositorio {
 
     public Participante localizarParticipante(String nome) {
         Participante member = this.participantes.get(nome);
-        if (member == null) {
-            // penso em fazer um tratamento especial
-            return null;
-        }
         return member;
     }
 
