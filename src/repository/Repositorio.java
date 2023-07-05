@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -99,32 +101,43 @@ public class Repositorio {
         }
 
         try {
-            String nomeemitente, nomedestinatario, texto;
-            int id;
-            LocalDateTime datahora;
-            Mensagem m;
-            Participante emitente, destinatario;
-            File f = new File(new File("./data/mensagens.csv").getCanonicalPath());
-            Scanner arquivo3 = new Scanner(f); // pasta do projeto
-            while (arquivo3.hasNextLine()) {
-                linha = arquivo3.nextLine().trim();
-                partes = linha.split(";");
-                id = Integer.parseInt(partes[0]);
-                nomeemitente = partes[1];
-                nomedestinatario = partes[2];
-                texto = partes[3];
-                datahora = LocalDateTime.parse(partes[4],
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS"));
-                emitente = this.localizarParticipante(nomeemitente);
-                destinatario = this.localizarParticipante(nomedestinatario);
-                m = new Mensagem(id, emitente, destinatario, texto, datahora);
-                this.adicionar(m);
-                emitente.adicionarEnviada(m);
-                destinatario.adicionarRecebida(m);
+
+            try {
+                String nomeemitente, nomedestinatario, texto;
+                int id;
+                LocalDateTime datahora;
+                Mensagem m;
+                Participante emitente, destinatario;
+                File f = new File(new File("./data/mensagens.csv").getCanonicalPath());
+                Scanner arquivo3 = new Scanner(f); // pasta do projeto
+                while (arquivo3.hasNextLine()) {
+                    linha = arquivo3.nextLine().trim();
+                    partes = linha.split(";");
+                    id = Integer.parseInt(partes[0]);
+                    nomeemitente = partes[1];
+                    nomedestinatario = partes[2];
+                    texto = partes[3];
+                    DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                            .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+                            .optionalStart()
+                            .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
+                            .optionalEnd()
+                            .toFormatter();
+                    datahora = LocalDateTime.parse(partes[4], formatter);
+
+                    emitente = this.localizarParticipante(nomeemitente);
+                    destinatario = this.localizarParticipante(nomedestinatario);
+                    m = new Mensagem(id, emitente, destinatario, texto, datahora);
+                    this.adicionar(m);
+                    emitente.adicionarEnviada(m);
+                    destinatario.adicionarRecebida(m);
+                }
+                arquivo3.close();
+            } catch (Exception ex) {
+                throw new RuntimeException("leitura arquivo de mensagens:" + ex.getMessage());
             }
-            arquivo3.close();
         } catch (Exception ex) {
-            throw new RuntimeException("leitura arquivo de mensagens:" + ex.getMessage());
+            throw new RuntimeException("criacao dos arquivos vazios:" + ex.getMessage());
         }
     }
 

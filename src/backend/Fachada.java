@@ -9,15 +9,17 @@ import model.Participante;
 import repository.Repositorio;
 
 public class Fachada {
-	public Fachada(){
+	public Fachada() {
 		System.out.println("ok");
 	}
+
 	private static Repositorio repositorio = new Repositorio();
 
 	/* Salva os objetos no repositório. */
 	public static void salvarDados() {
 		repositorio.salvarObjetos();
 	};
+
 	/* adivinha o que este metodo faz */
 	public static void carregarDados() {
 		repositorio.carregarObjetos();
@@ -255,7 +257,7 @@ public class Fachada {
 	 * @throws Exception Se ocorrer um erro ao criar a mensagem.
 	 */
 	public static void criarMensagem(String nomeemitente, String nomedestinatario, String texto) throws Exception {
-		
+
 		if (texto.isEmpty())
 			throw new Exception("criar mensagem - texto vazio:");
 
@@ -271,7 +273,10 @@ public class Fachada {
 		int id = (todasMensagens.size() == 0) ? 1 : todasMensagens.get(todasMensagens.size() - 1).getId() + 1;
 
 		Mensagem enviada = new Mensagem(id, emitente, destinatario, texto);
+
 		emitente.adicionarEnviada(enviada);
+		destinatario.adicionarRecebida(enviada);
+		repositorio.adicionar(enviada);
 
 		/*
 		 * O Emitente deve adicionar a mensagem enviada em sua caixa de enviados.
@@ -282,35 +287,31 @@ public class Fachada {
 
 			if (emitente.localizarGrupo(destinatario.getNome()) == null)
 				throw new Exception("criar mensagem - grupo nao permitido:" + nomedestinatario);
-			
-			
 
 			for (Participante p : ((Grupo) destinatario).getIndividuos()) {
-				
+
 				if (!p.equals(emitente)) {
 					String newtexto = emitente.getNome() + " / " + texto;
+
 					/* O grupo é o novo emitente da mensagem */
 					Mensagem copia = new Mensagem(id, destinatario, p, newtexto);
 					p.adicionarRecebida(copia);
-					emitente.adicionarEnviada(copia);
+					destinatario.adicionarEnviada(copia);
 					repositorio.adicionar(copia);
-					
-				}else{
-					Mensagem original = new Mensagem(id, destinatario, p, texto);
-					destinatario.adicionarRecebida(original);
-					emitente.adicionarEnviada(original);
-					repositorio.adicionar(original);
-					
+
 				}
+				/*
+				 * else {
+				 * Mensagem original = new Mensagem(id, destinatario, p, texto);
+				 * destinatario.adicionarRecebida(original);
+				 * emitente.adicionarEnviada(original);
+				 * repositorio.adicionar(original);
+				 * 
+				 * }
+				 */
 			}
-		}else{
-			destinatario.adicionarRecebida(enviada);
-			repositorio.adicionar(enviada);
-			
 		}
 		repositorio.salvarObjetos();
-
-		
 
 		// cont.
 		// gerar id no repositorio para a mensagem
@@ -333,7 +334,7 @@ public class Fachada {
 	 * @throws Exception Se ocorrer um erro ao recuperar a conversa.
 	 */
 	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) throws Exception {
-		
+
 		// localizar emitente no repositorio
 		// localizar destinatario no repositorio
 		// obter do emitente a lista enviadas
@@ -438,7 +439,6 @@ public class Fachada {
 	 * @throws Exception Se ocorrer um erro ao excluir a mensagem.
 	 */
 	public static void apagarMensagem(String nomeindividuo, int id) throws Exception {
-	
 
 		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
 		if (emitente == null)
@@ -450,49 +450,20 @@ public class Fachada {
 
 		Participante destinatario = m.getDestinatario();
 
-		destinatario.removerRecebida(m);
-
+		emitente.removerEnviada(m.getId());
+		destinatario.removerRecebida(m.getId());
+		repositorio.remover(m);
 		if (destinatario instanceof Grupo) {
-			ArrayList<Individual> participantes = ((Grupo) destinatario).getIndividuos();
-
-			/* Remove a mensagem Recebida para cada participante */
-			for (Participante p : participantes) {
-				/* Remove da lista de recebidas, a mensagem escolhida para ser removida */
+			for (Participante p : ((Grupo) destinatario).getIndividuos()) {
 				if (!p.equals(emitente)) {
-
-					p.removerRecebida(m);
-
-					destinatario.removerEnviada(m);
-
-					repositorio.remover(m);
+					Mensagem clone = p.removerRecebida(id);
+					repositorio.remover(clone);
 				}
 			}
-
-		} else {
-			emitente.removerEnviada(m);
-			repositorio.remover(m);
+			destinatario.removerEnviada(id);
 		}
 
-		/* Aquele que enviou a mensagem, remove o seu laço com a mensagem. */
 		Fachada.salvarDados();
-
-		/*
-		 * if (destinatario instanceof Grupo) {
-		 * ArrayList<Mensagem> lista = destinatario.getRecebidas();
-		 * lista.removeIf(new Predicate<Mensagem>() {
-		 * 
-		 * @Override
-		 * public boolean test(Mensagem t) {
-		 * if (t.getId() == m.getId()) {
-		 * t.getDestinatario().removerRecebida(t);
-		 * repositorio.remover(t);
-		 * return true; // apaga mensagem da lista
-		 * } else
-		 * return false;
-		 * }
-		 * });
-		 * }
-		 */
 	}
 
 	/**
