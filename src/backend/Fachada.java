@@ -1,6 +1,9 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import model.Grupo;
 import model.Individual;
@@ -165,6 +168,8 @@ public class Fachada {
 
 		else
 			throw new Exception("Esse índividuo já é um administrador!");
+		
+		repositorio.salvarObjetos();
 
 	}
 
@@ -356,14 +361,38 @@ public class Fachada {
 		if (destinatario == null) {
 			throw new Exception("criar mensagem - destinatario nao existe:" + nomedestinatario);
 		}
-
-		System.out.println(emitente.getRecebidas());
-		System.out.println(emitente.getEnviadas());
+		
+		ArrayList<Mensagem> conversa = new ArrayList<>();
+		for(Mensagem m:repositorio.getMensagems()){
+			if(m.getEmitente().equals(emitente) && m.getDestinatario().equals(destinatario)){
+				conversa.add(m);
+			}else if(m.getEmitente().equals(destinatario) && m.getDestinatario().equals(emitente)){
+				conversa.add(m);
+			}
+		}
+		ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
+		int sizeList = conversa.size();
+		for (int i = 0; i < sizeList; i++) {
+		Mensagem minMsg = conversa.get(0);
+		for (Mensagem msg : conversa) {
+		if (msg.getId() < minMsg.getId()) {
+		minMsg = msg;
+		}
+		}
+		conversa.remove(minMsg);
+		conversaOrganizada.add(minMsg);
+		}
+		System.out.println(conversaOrganizada);
+	return conversaOrganizada;
+		
+        
+			/*
+		ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
 		ArrayList<Mensagem> mensagensEnviadas = emitente.getEnviadas();
 		ArrayList<Mensagem> mensagensRecebidas = emitente.getRecebidas();
 		ArrayList<Mensagem> conversa = new ArrayList<>();
 		// ArrayList<Mensagem> conversaOrganizada = new ArrayList<>();
-
+	
 		int indexEnviada = 0;
 		int indexRecebida = 0;
 
@@ -394,8 +423,8 @@ public class Fachada {
 				}
 			}
 
-		}
-		return conversa;
+		}*/
+		
 		/*
 		 * if (mensagensEnviadas.size() > 0) {
 		 * for (Mensagem msg : mensagensEnviadas) {

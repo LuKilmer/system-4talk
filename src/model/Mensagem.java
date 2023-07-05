@@ -1,7 +1,7 @@
 package model;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 
 public class Mensagem {
 	private int id;
@@ -66,4 +66,11 @@ public class Mensagem {
 	public void setDestinario(Participante p) {
 		this.destinatario = p;
 	}
+	
+    public Mensagem compareTo(Mensagem outroObjeto) {
+		if(this.getId()< outroObjeto.getId()){
+			return this;
+		}else{return outroObjeto;}
+        
+    }
 }
