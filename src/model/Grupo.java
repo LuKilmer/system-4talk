@@ -43,4 +43,18 @@ public class Grupo extends Participante {
 		}
 		this.getRecebidas().remove(recebida);
 	}
+
+	public ArrayList<Mensagem> localizarClones(int id) {
+
+		ArrayList<Mensagem> clones = new ArrayList<>();
+
+		for (Mensagem m : this.getEnviadas()) {
+			if (m.getId() == id)
+				clones.add(m);
+			else if (m.getId() > id)
+				break;
+		}
+		return clones;
+	}
+
 }
